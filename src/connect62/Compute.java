@@ -6,6 +6,7 @@ public class Compute {
 	int[][]result=new int[2][2];
 	int myColor;
 	Column column;
+	Diagonal1 diagonal1;
 	
 	Compute(int[][]map, int myColor){
 		this.map = map;
@@ -13,6 +14,8 @@ public class Compute {
 		scoreMap = new int[map.length][map.length];
 		makeClean(scoreMap);
 		column = new Column(map, scoreMap, myColor);
+		diagonal1 = new Diagonal1(map, scoreMap, myColor);
+		
 	}
 	
 	public void execute(){
@@ -21,6 +24,7 @@ public class Compute {
 		checkAlreadyDone();
 		//그리고 가로줄을 스캔해서 점수를 줄곳에 점수를 주는거야 실행해. 
 		scoreMap=column.execute();
+		scoreMap=diagonal1.execute();
 		//그런다음 점수맵을 프린트해보고.
 		printMap(scoreMap);
 		//result에는 어디다 돌을 두어야 하는지가 나와.
@@ -39,7 +43,7 @@ public class Compute {
 		for(int i=0;i<map.length;i++) {
 			System.out.println(" ");
 			for(int j=0;j<map.length;j++) {
-				System.out.print(map[i][j]);
+				System.out.print(map[i][j]+"|");
 			}
 		}
 		System.out.println(" ");
