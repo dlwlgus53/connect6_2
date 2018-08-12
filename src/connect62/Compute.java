@@ -43,7 +43,11 @@ public class Compute {
 		for(int i=0;i<map.length;i++) {
 			System.out.println(" ");
 			for(int j=0;j<map.length;j++) {
+<<<<<<< HEAD
 				System.out.printf("%6d|" ,map[i][j]);
+=======
+				System.out.print(map[i][j]+"|");
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 			}
 		}
 		System.out.println(" ");

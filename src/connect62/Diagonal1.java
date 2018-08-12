@@ -3,7 +3,11 @@ package connect62;
 import java.util.ArrayList;
 
 public class Diagonal1 {
+<<<<<<< HEAD
 	//x=y기울기를 가지는 대각선 방향친구.
+=======
+//x=y기울기를 가지는 대각선 방향친구.
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 	int[][]scoreMap;
 	int[][]map;
 	int myColor;
@@ -17,18 +21,28 @@ public class Diagonal1 {
 	}
 
 	int[][] execute() {
+<<<<<<< HEAD
 		findMine();
 	//	findMyOne();
+=======
+		findMyOne();
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 		//findMyThree();
 		//findMyFour();
 		//findMyFour();
 		//findMyFive();
+<<<<<<< HEAD
 		findEnemy();
 		//findEnemyThree();
+=======
+		//findEnemyOne();
+		///findEnemyThree();
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 		//findEnemyFour();
 		//findEnemyFive();
 		return scoreMap;
 	}
+<<<<<<< HEAD
 	void findMine() {//칸6개씩 볼거야, 근데 거기에 내꺼3개가 있으면 다른거 상관안하고 당장 거기다 놓아야 하자나 그래서 가산점을 줄거야, 근데 남의 돌이 중간에 끼어 있을수있다는걸
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
@@ -106,10 +120,27 @@ public class Diagonal1 {
 
 				boolean temp = false;
 				boolean isEnemy=false;
+=======
+
+	void findMyOne() {//6칸을 유닛으로 떼어 내 그래서 그 6칸안에 내 돌이 있으면 나머지 칸에 점수를 10점 부여해, 남의돌이 있는거는 고려를 안해.
+		int[] unit = new int[6];
+		for(int i=5;i<map.length;i++) {
+			for(int j=0;j<map.length-6;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i-1][j+1];
+				unit[k+2]=map[i-2][j+2];
+				unit[k+3]=map[i-3][j+3];
+				unit[k+4]=map[i-4][j+4];
+				unit[k+5]=map[i-5][j+5];
+
+				boolean temp = false;
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 				for(k=0;k<6;k++) {
 					if(unit[k]==myColor)
 						temp = true;
+<<<<<<< HEAD
 					if(unit[k]==enemyColor)
 						isEnemy=true;
 				}
@@ -119,6 +150,15 @@ public class Diagonal1 {
 					for(tempj=j,tempi=i;tempj<j+6&&tempi>i-6 ;tempj++,tempi--) {
 						if(scoreMap[tempi][tempj]!=-10000) scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
 
+=======
+				}
+				if(temp==true){
+					int tempj;
+					int tempi;
+						for(tempj=j,tempi=i;tempj<j+6&&tempi>i-6 ;tempj++,tempi--) {
+							if(scoreMap[tempi][tempj]!=-10000) scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
+						
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 					}
 
 				}
@@ -130,9 +170,20 @@ public class Diagonal1 {
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
+<<<<<<< HEAD
 			for(int j=0;j<map.length-6+1;j++) {
 				int k=0;
 				unit=copyToUnit(unit,i,j);
+=======
+			for(int j=0;j<map.length-6;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i-1][j+1];
+				unit[k+2]=map[i-2][j+2];
+				unit[k+3]=map[i-3][j+3];
+				unit[k+4]=map[i-4][j+4];
+				unit[k+5]=map[i-5][j+5];
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 
 				int count=0;
@@ -163,9 +214,20 @@ public class Diagonal1 {
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
+<<<<<<< HEAD
 			for(int j=0;j<map.length-6+1;j++) {
 				int k=0;
 				unit=copyToUnit(unit,i,j);
+=======
+			for(int j=0;j<map.length-6;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i-1][j+1];
+				unit[k+2]=map[i-2][j+2];
+				unit[k+3]=map[i-3][j+3];
+				unit[k+4]=map[i-4][j+4];
+				unit[k+5]=map[i-5][j+5];
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 
 
@@ -193,12 +255,26 @@ public class Diagonal1 {
 
 	}
 
+<<<<<<< HEAD
 	/*void findMyFive() {//이거는 5개 있을때 점수를 줄거야. 상대방 돌이 있는거 신경을 안썼어..근데 상관없나..?아닌가..?
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
 				int k=0;
 				unit=copyToUnit(unit,i,j);
+=======
+/*	void findMyFive() {//세컨드 함수가 4개씩 있을때 점수를 준거라면 이거는 5개 있을때 점수를 줄거야. 상대방 돌이 있는거 신경을 안썼어..근데 상관없나..?아닌가..?
+		int[] unit = new int[6];
+		for(int i=0;i<map.length;i++) {
+			for(int j=0;j<map.length-6+1;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i][j+1];
+				unit[k+2]=map[i][j+2];
+				unit[k+3]=map[i][j+3];
+				unit[k+4]=map[i][j+4];
+				unit[k+5]=map[i][j+5];
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 
 				int count=0;
@@ -206,6 +282,7 @@ public class Diagonal1 {
 					if(unit[k]==myColor)
 						count++;
 				}
+<<<<<<< HEAD
 
 				if(count==5){
 					int tempj;
@@ -213,6 +290,13 @@ public class Diagonal1 {
 					for(tempj=j,tempi=i;tempj<j+6;tempj++,tempi--) {
 						if(scoreMap[tempi][tempj]!=-10000) {
 							scoreMap[tempi][tempj]+=400;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+=======
+				if(count==5){
+					int tempj;
+					for(tempj=j;tempj<j+6;tempj++) {
+						if(scoreMap[i][tempj]!=-10000) {
+							scoreMap[i][tempj]+=400;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 						}
 					}
 
@@ -220,6 +304,7 @@ public class Diagonal1 {
 			}
 		}
 
+<<<<<<< HEAD
 	}*/
 
 	
@@ -322,6 +407,21 @@ public class Diagonal1 {
 			for(int j=0;j<map.length-6+1;j++) {
 				int k=0;
 				unit=copyToUnit(unit,i,j);
+=======
+	}
+
+	void findEnemyOne() {//6칸을 유닛으로 떼어 내 그래서 그 6칸안에 내 돌이 있으면 나머지 칸에 점수를 10점 부여해, 남의돌이 있는거는 고려를 안해.
+		int[] unit = new int[6];
+		for(int i=0;i<map.length;i++) {
+			for(int j=0;j<map.length-6+1;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i][j+1];
+				unit[k+2]=map[i][j+2];
+				unit[k+3]=map[i][j+3];
+				unit[k+4]=map[i][j+4];
+				unit[k+5]=map[i][j+5];
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 				boolean temp = false;
 
@@ -331,38 +431,66 @@ public class Diagonal1 {
 				}
 				if(temp==true){
 					int tempj;
+<<<<<<< HEAD
 					int tempi;
 
 					for(tempj=j,tempi=i;tempj<j+6;tempj++,tempi--) {
 						if(scoreMap[tempi][tempj]!=-10000) scoreMap[tempi][tempj]+=10;
 
+=======
+					
+						for(tempj=j;tempj<j+6;tempj++) {
+							if(scoreMap[i][tempj]!=-10000) scoreMap[i][tempj]+=10;
+						
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 					}
 
 				}
 			}
 		}
 	}
+<<<<<<< HEAD
 
 
+=======
+	
+	
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 	void findEnemyThree() {//6개씩 유닛을 만들어 그래가지구, 6개안에 내 돌이 없고, 상대방 돌만 3개가 있자나 그럼, 그 돌 양쪽에 점수를 주는걸로!랜덤리가 아니라!~
 		int[] unit = new int[6];
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);
 
+<<<<<<< HEAD
 		for(int i=5;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
 				int k=0;
 				unit=copyToUnit(unit,i,j);
+=======
+		for(int i=0;i<map.length;i++) {
+			for(int j=0;j<map.length-6+1;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i][j+1];
+				unit[k+2]=map[i][j+2];
+				unit[k+3]=map[i][j+3];
+				unit[k+4]=map[i][j+4];
+				unit[k+5]=map[i][j+5];
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 
 				int count=0;
 				int tempj=j;
+<<<<<<< HEAD
 				int tempi=i;
+=======
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 				boolean IsMine=false;
 
 				for(k=0;k<6;k++,tempj++) {
 					if(unit[k]==enemyColor) {
 						count++;
+<<<<<<< HEAD
 						if(tempi+1<map.length&&tempj-1>=0) {
 							listRow.add(tempi+1);//대각선 방향 왼쪽 아래돌
 							listCol.add(tempj-1);
@@ -371,6 +499,13 @@ public class Diagonal1 {
 							listRow.add(tempi-1);//대각선 방향 오른쪽 위 돌
 							listCol.add(tempj+1);
 						}
+=======
+						listRow.add(i);//왼쪽..에만둘게..?
+						listCol.add(tempj-1);
+						listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+						listCol.add(tempj+1);
+					
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 					}
 					if(unit[k]==myColor)	IsMine=true;
 				}
@@ -380,7 +515,11 @@ public class Diagonal1 {
 					int index=0;//이거는 리스트에서 쓸거
 					while(index<listRow.size()) {
 						if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
+<<<<<<< HEAD
 							scoreMap[listRow.get(index)][listCol.get(index)]+=200;//200점 드립니다~
+=======
+							scoreMap[listRow.get(index)][listCol.get(index)]+=200;
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 						index++;
 					}
 
@@ -390,21 +529,39 @@ public class Diagonal1 {
 		}
 
 	}
+<<<<<<< HEAD
 
 	void findEnemyFour() {//6개씩 유닛을 만들어 그래가지구, 6개안에 내 돌이 없고, 상대방 돌만 4개가 있자나 그럼, 그 돌 양쪽에 점수를 주는걸로!랜덤리가 아니라!~
+=======
+		
+	void findEnemyFour() {//6개씩 유닛을 만들어 그래가지구, 6개안에 내 돌이 없고, 상대방 돌만 3개가 있자나 그럼, 그 돌 양쪽에 점수를 주는걸로!랜덤리가 아니라!~
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 		int[] unit = new int[6];
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);
 
+<<<<<<< HEAD
 		for(int i=5;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
 				int k=0;
 				unit=copyToUnit(unit,i,j);
 
+=======
+		for(int i=0;i<map.length;i++) {
+			for(int j=0;j<map.length-6+1;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i][j+1];
+				unit[k+2]=map[i][j+2];
+				unit[k+3]=map[i][j+3];
+				unit[k+4]=map[i][j+4];
+				unit[k+5]=map[i][j+5];
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 
 				int count=0;
 				int tempj=j;
+<<<<<<< HEAD
 				int tempi=i;
 				boolean IsMine=false;
 //어..잘모르겠다 여기까지했어.
@@ -419,6 +576,18 @@ public class Diagonal1 {
 							listRow.add(tempi-1);//대각선 방향 오른쪽 위 돌
 							listCol.add(tempj+1);
 						}
+=======
+				boolean IsMine=false;
+
+				for(k=0;k<6;k++,tempj++) {
+					if(unit[k]==enemyColor) {
+						count++;
+						listRow.add(i);//왼쪽..에만둘게..?
+						listCol.add(tempj-1);
+						listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+						listCol.add(tempj+1);
+					
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 					}
 					if(unit[k]==myColor)	IsMine=true;
 				}
@@ -438,27 +607,47 @@ public class Diagonal1 {
 		}
 
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 	void findEnemyFive() {//6개씩 유닛을 만들어 그래가지구, 6개안에 내 돌이 없고, 상대방 돌만 3개가 있자나 그럼, 그 돌 양쪽에 점수를 주는걸로!랜덤리가 아니라!~
 		int[] unit = new int[6];
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);
 
+<<<<<<< HEAD
 		for(int i=5;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
 				int k=0;
 				unit=copyToUnit(unit,i,j);
 
+=======
+		for(int i=0;i<map.length;i++) {
+			for(int j=0;j<map.length-6+1;j++) {
+				int k=0;
+				unit[k] = map[i][j];
+				unit[k+1]=map[i][j+1];
+				unit[k+2]=map[i][j+2];
+				unit[k+3]=map[i][j+3];
+				unit[k+4]=map[i][j+4];
+				unit[k+5]=map[i][j+5];
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 
 
 				int count=0;
 				int tempj=j;
+<<<<<<< HEAD
 				int tempi=i;
+=======
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 				boolean IsMine=false;
 
 				for(k=0;k<6;k++,tempj++) {
 					if(unit[k]==enemyColor) {
 						count++;
+<<<<<<< HEAD
 						if(tempi+1<map.length&&tempj-1>=0) {
 							listRow.add(tempi+1);//대각선 방향 왼쪽 아래돌
 							listCol.add(tempj-1);
@@ -468,6 +657,13 @@ public class Diagonal1 {
 							listCol.add(tempj+1);
 						}
 
+=======
+						listRow.add(i);//왼쪽..에만둘게..?
+						listCol.add(tempj-1);
+						listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+						listCol.add(tempj+1);
+					
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 					}
 					if(unit[k]==myColor)	IsMine=true;
 				}
@@ -486,6 +682,7 @@ public class Diagonal1 {
 			}
 		}
 
+<<<<<<< HEAD
 	}*/
 	
 	int[]copyToUnit(int[]unit, int row, int col){
@@ -501,4 +698,8 @@ public class Diagonal1 {
 		return unit;
 	}
 
+=======
+	}
+*/
+>>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
 }
