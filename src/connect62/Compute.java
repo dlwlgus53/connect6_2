@@ -24,7 +24,7 @@ public class Compute {
 		checkAlreadyDone();
 		//그리고 가로줄을 스캔해서 점수를 줄곳에 점수를 주는거야 실행해. 
 		scoreMap=column.execute();
-		scoreMap=diagonal1.execute();
+		//scoreMap=diagonal1.execute();
 		//그런다음 점수맵을 프린트해보고.
 		printMap(scoreMap);
 		//result에는 어디다 돌을 두어야 하는지가 나와.
@@ -43,11 +43,11 @@ public class Compute {
 		for(int i=0;i<map.length;i++) {
 			System.out.println(" ");
 			for(int j=0;j<map.length;j++) {
-<<<<<<< HEAD
+
 				System.out.printf("%6d|" ,map[i][j]);
-=======
-				System.out.print(map[i][j]+"|");
->>>>>>> 28d60695390135ae693e1d824984358d4dc37ddf
+
+			//	System.out.print(map[i][j]+"|");
+
 			}
 		}
 		System.out.println(" ");
