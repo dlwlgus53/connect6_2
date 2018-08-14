@@ -81,30 +81,30 @@ public class Make4by4 {
 
 				if(targetNumber>=2) {
 					
-					if(target[0]==true) {
+					if(target[0]==true) {//column
 						for(tempi=i,tempj=j;tempj<j+6;tempj++) {
 							if(scoreMap[tempi][tempj]!=-10000)
-								scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
+								scoreMap[tempi][tempj]+=100;//
 						}//this is for targetColumn
 					}
-					if(target[0]==true) {
-						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000)
-								scoreMap[i][tempj]+=20;//내 돌 근처에 20점 드립니다~
+					if(target[1]==true) {//row
+						for(tempj=j,tempi=i;tempi<i+6;tempi++) {
+							if(scoreMap[tempi][tempj]!=-10000)
+								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 						}
 
 					}
-					if(target[0]==true) {
-						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000)
-								scoreMap[i][tempj]+=20;//내 돌 근처에 20점 드립니다~
+					if(target[2]==true) {//dia1
+						for(tempj=j,tempi=i ;tempj<j+6;tempi--,tempj++) {
+							if(scoreMap[tempi][tempj]!=-10000)
+								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 						}
 
 					}
-					if(target[0]==true) {
-						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000)
-								scoreMap[i][tempj]+=20;//내 돌 근처에 20점 드립니다~
+					if(target[3]==true) {//dai2
+						for(tempj=j,tempi=i;tempj<j+6;tempj++,tempi--) {
+							if(scoreMap[tempi][tempj]!=-10000)
+								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 						}
 
 					}
