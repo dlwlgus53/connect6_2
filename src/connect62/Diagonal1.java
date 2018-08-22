@@ -42,13 +42,13 @@ public class Diagonal1 {
 					if(unit[k]==myColor)
 						count++;
 				}
-				System.out.println("count : " + count);
+			
 				if(isEnemy==false) {
 
 					switch(count){
 					case 1 : 
 						for(tempj=j,tempi=i;tempj<j+6&&tempi>i-6 ;tempj++,tempi--) {
-							System.out.println("i : " +tempi + " j : " + tempj);
+							
 							if(scoreMap[tempi][tempj]!=-10000)
 								scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
 						}
@@ -61,12 +61,14 @@ public class Diagonal1 {
 						break;
 
 					case 3 : 
+					
 						for(tempj=j,tempi=i;tempj<j+6&&tempi>i-6 ;tempj++,tempi--) {
 							if(scoreMap[tempi][tempj]!=-10000)
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 100점 드립니다~
 						}
 						break;
 					case 4 :
+						
 						for(tempj=j,tempi=i;tempj<j+6&&tempi>i-6 ;tempj++,tempi--)  {
 							if(scoreMap[tempi][tempj]!=-10000)
 								scoreMap[tempi][tempj]+=200;//6칸에 우리돌4개 상대방돌 없으면 200점 줍니다.
@@ -113,19 +115,12 @@ public class Diagonal1 {
 				for(k=0;k<6;k++,tempj++,tempi--) {
 					if(unit[k]==enemyColor) {
 						count++;
-						if(tempi+1<map.length&&tempj-1>=0) {
-							listRow.add(tempi+1);//대각선 방향 왼쪽 아래돌
-							listCol.add(tempj-1);
-						}
-						if(tempi-1>=0&&tempj+1<map.length) {
-							listRow.add(tempi-1);//대각선 방향 오른쪽 위 돌
-							listCol.add(tempj+1);
-						}
+						
 					}
 					if(unit[k]==myColor)
 						isMine = true;
 				}
-				listRow.trimToSize();
+		
 
 
 				if(isMine==false) {
@@ -143,6 +138,16 @@ public class Diagonal1 {
 						}
 						break;
 					case 3:
+						for(tempi=i, tempj=j;tempi>i-6;tempj++,tempi--) {
+							if(tempj+1<map.length&&tempi-1>=0) {
+								listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
+								listCol.add(tempj+1);
+							}
+							if(tempj-1>=0&&tempj+1<map.length) {
+								listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
+								listCol.add(tempj-1);
+							}
+						}
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
 								scoreMap[listRow.get(index)][listCol.get(index)]+=200;
@@ -150,16 +155,35 @@ public class Diagonal1 {
 						}
 						break;
 					case 4:
-						System.out.println(listRow.size());
+						for(tempi=i, tempj=j;tempi>i-6;tempj++,tempi--) {
+							if(tempj+1<map.length&&tempi-1>=0) {
+								listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
+								listCol.add(tempj+1);
+							}
+							if(tempj-1>=0&&tempj+1<map.length) {
+								listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
+								listCol.add(tempj-1);
+							}
+						}
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
 								scoreMap[listRow.get(index)][listCol.get(index)]+=400;
-							System.out.printf("index : %d row : %d col :  %d\n", index, listRow.get(index), listCol.get(index));
+							
 							index++;
 
 						}
 						break;
 					case 5:
+						for(tempi=i, tempj=j;tempi>i-6;tempj++,tempi--) {
+							if(tempj+1<map.length&&tempi-1>=0) {
+								listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
+								listCol.add(tempj+1);
+							}
+							if(tempj-1>=0&&tempj+1<map.length) {
+								listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
+								listCol.add(tempj-1);
+							}
+						}
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
 								scoreMap[listRow.get(index)][listCol.get(index)]+=500;

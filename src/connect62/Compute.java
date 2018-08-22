@@ -7,6 +7,9 @@ public class Compute {
 	int myColor;
 	Column column;
 	Diagonal1 diagonal1;
+	Row row;
+	Diagonal2 diagonal2;
+	Make4by4 make4by4;
 	
 	Compute(int[][]map, int myColor){
 		this.map = map;
@@ -15,6 +18,9 @@ public class Compute {
 		makeClean(scoreMap);
 		column = new Column(map, scoreMap, myColor);
 		diagonal1 = new Diagonal1(map, scoreMap, myColor);
+		row = new Row(map,scoreMap, myColor);
+		diagonal2 = new Diagonal2(map, scoreMap, myColor);
+		make4by4 = new Make4by4(map,scoreMap, myColor);
 		
 	}
 	
@@ -24,7 +30,10 @@ public class Compute {
 		checkAlreadyDone();
 		//그리고 가로줄을 스캔해서 점수를 줄곳에 점수를 주는거야 실행해. 
 		scoreMap=column.execute();
-		//scoreMap=diagonal1.execute();
+		scoreMap=diagonal1.execute();
+		scoreMap = row.execute();
+		scoreMap = diagonal2.execute();
+		scoreMap = make4by4.execute();
 		//그런다음 점수맵을 프린트해보고.
 		printMap(scoreMap);
 		//result에는 어디다 돌을 두어야 하는지가 나와.

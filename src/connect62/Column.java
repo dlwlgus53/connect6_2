@@ -113,13 +113,7 @@ public class Column {
 				for(k=0;k<6;k++,tempj++) {
 					if(unit[k]==enemyColor) {
 						count++;
-						if(tempj>=1) {
-							listRow.add(i);//왼쪽..에만둘게..?
-							listCol.add(tempj-1);
-						}
-						if(tempj<=map.length-1) {
-							listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
-							listCol.add(tempj+1);}
+
 
 					}
 					if(unit[k]==myColor)
@@ -141,23 +135,52 @@ public class Column {
 						}
 						break;
 					case 3:
+						for(tempj=j;tempj<j+6;tempj++) {
+							if(tempj>=1) {
+								listRow.add(i);//왼쪽..에만둘게..?
+								listCol.add(tempj-1);
+							}
+							if(tempj<=map.length-1) {
+								listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+								listCol.add(tempj+1);
+							}
+						}
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
 								scoreMap[listRow.get(index)][listCol.get(index)]+=200;
 							index++;
 						}
+
 						break;
 					case 4:
-						System.out.println(listRow.size());
+						for(tempj=j;tempj<j+6;tempj++) {
+							if(tempj>=1) {
+								listRow.add(i);//왼쪽..에만둘게..?
+								listCol.add(tempj-1);
+							}
+							if(tempj<=map.length-1) {
+								listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+								listCol.add(tempj+1);
+							}
+						}
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
 								scoreMap[listRow.get(index)][listCol.get(index)]+=400;
-							System.out.printf("index : %d row : %d col :  %d\n", index, listRow.get(index), listCol.get(index));
 							index++;
 
 						}
 						break;
 					case 5:
+						for(tempj=j;tempj<j+6;tempj++) {
+							if(tempj>=1) {
+								listRow.add(i);//왼쪽..에만둘게..?
+								listCol.add(tempj-1);
+							}
+							if(tempj<=map.length-1) {
+								listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+								listCol.add(tempj+1);
+							}
+						}
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
 								scoreMap[listRow.get(index)][listCol.get(index)]+=500;
