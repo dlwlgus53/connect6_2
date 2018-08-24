@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 public class Make4by4 {
 
-	int[][]scoreMap;
+	double[][]scoreMap;
 	int[][]map;
 	int myColor;
 	int enemyColor;
 
-	Make4by4(int[][] map,int[][]scoreMap,int myColor){
+	Make4by4(int[][] map,double[][]scoreMap,int myColor){
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;
 		enemyColor = myColor*-1;
 	}
 
-	int[][] execute() {
+	double[][] execute() {
 		findMine();
 		return scoreMap;
 	}
@@ -83,27 +83,27 @@ public class Make4by4 {
 					
 					if(target[0]==true) {//column
 						for(tempi=i,tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[tempi][tempj]!=-10000)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
 								scoreMap[tempi][tempj]+=100;//
 						}//this is for targetColumn
 					}
 					if(target[1]==true) {//row
 						for(tempj=j,tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][tempj]!=-10000)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 						}
 
 					}
 					if(target[2]==true) {//dia1
 						for(tempj=j,tempi=i ;tempj<j+6;tempi--,tempj++) {
-							if(scoreMap[tempi][tempj]!=-10000)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 						}
 
 					}
 					if(target[3]==true) {//dai2
 						for(tempj=j,tempi=i;tempj<j+6;tempj++,tempi--) {
-							if(scoreMap[tempi][tempj]!=-10000)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 						}
 
