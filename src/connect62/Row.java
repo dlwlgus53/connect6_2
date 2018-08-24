@@ -1,4 +1,5 @@
 package connect62;
+import java.io.*;
 import java.util.ArrayList;
 
 
@@ -8,15 +9,18 @@ public class Row {
 	int[][]map;
 	int myColor;
 	int enemyColor;
+	FileWriter writer;
 
-	Row(int[][] map,double[][]scoreMap,int myColor){
+	Row(int[][] map,double[][]scoreMap,int myColor, FileWriter writer) throws IOException{
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;
 		enemyColor = myColor*-1;
+		this.writer = writer;
+
 	}
 
-	double[][] execute() {
+	double[][] execute() throws IOException{
 		findMyFive();
 		findMyFour();
 		findMine();
@@ -26,7 +30,7 @@ public class Row {
 		return scoreMap;
 	}
 
-	void findMyFive(){
+	void findMyFive() throws IOException{
 
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
@@ -52,6 +56,7 @@ public class Row {
 					int tempi=i;
 					for(tempi=i;tempi<i+6;tempi++) {
 						if(scoreMap[tempi][j]!=-10000&&(scoreMap[tempi][j]==0||scoreMap[tempi][j]>1)) {
+							writer.append("(" + tempi + "," + j + ") row findmy5 "+ 1 +"\n");
 							scoreMap[tempi][j]=1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
 						}
 					}
@@ -63,7 +68,7 @@ public class Row {
 		}
 	}
 
-	void findMyFour() {
+	void findMyFour() throws IOException {
 
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
@@ -89,6 +94,7 @@ public class Row {
 					int tempi=i;
 					for(tempi=i;tempi<i+6;tempi++) {
 						if(scoreMap[tempi][j]!=-10000&&(scoreMap[tempi][j]==0||scoreMap[tempi][j]>2.2)) {
+							writer.append("(" + tempi + "," + j + ") row findmy4 "+ 2.2 +"\n");
 							scoreMap[tempi][j]=2.2;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
 						}
 					}
@@ -103,7 +109,7 @@ public class Row {
 
 	}
 
-	void findMine() {
+	void findMine() throws IOException {
 
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
@@ -130,23 +136,34 @@ public class Row {
 					switch(count){
 					case 1 : 
 						for(tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0)
+							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0) {
+								writer.append("(" + tempi + "," + j + ") row findmy1 "+ 20 +"\n");
 								scoreMap[tempi][j]+=20;//내 돌 근처에 20점 드립니다~
+							}
+
 						}
 						break;
 					case 2 : 
 						for(tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0)
+							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0) {
 								scoreMap[tempi][j]+=20;//6개 안에 2개 있을때 내 돌 근처에 20점 드립니다~
+								writer.append("(" + tempi + "," + j + ") row findmy2 "+ 20 +"\n");
+							}
 						} 
 						break;
 
 					case 3 : 
 						for(tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0)
+							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0) {
 								scoreMap[tempi][j]+=100;//6칸에 3개만있고 상대방 돌 없으면 100점줍니다.
+								writer.append("(" + tempi + "," + j + ") row findmy2 "+ 100 +"\n");
+							}
 						}
 						break;
+					case 6:
+						System.out.println("you win...");
+						System.exit(0);
+
 
 					}
 				}
@@ -157,7 +174,7 @@ public class Row {
 
 	}
 
-	void findEnemy() {//6칸을 유닛으로 떼어 내 그래서 그 6칸안에 상대방 돌이 있으면 나머지 칸에 점수를 10점 부여해
+	void findEnemy() throws IOException {//6칸을 유닛으로 떼어 내 그래서 그 6칸안에 상대방 돌이 있으면 나머지 칸에 점수를 10점 부여해
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 		int[] unit = new int[6];//6개씩 떼어서 생각
@@ -197,12 +214,18 @@ public class Row {
 					switch(count) {
 					case 1:
 						for(tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0) scoreMap[tempi][j]+=10;
+							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0) {
+								scoreMap[tempi][j]+=10;
+								writer.append("(" + tempi + "," + j + ") row findene1 "+ 10 +"\n");
+							}
 						}
 						break;
 					case 2:
 						for(tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0)scoreMap[tempi][j]+=10;
+							if(scoreMap[tempi][j]!=-10000&&scoreMap[tempi][j]%10==0) {
+								scoreMap[tempi][j]+=10;
+								writer.append("(" + tempi + "," + j + ") row findmy2 "+ 10 +"\n");
+							}
 						}
 						break;
 					case 3:
@@ -218,11 +241,16 @@ public class Row {
 						}
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
-									scoreMap[listRow.get(index)][listCol.get(index)]%10==0)
+									scoreMap[listRow.get(index)][listCol.get(index)]%10==0) {
 								scoreMap[listRow.get(index)][listCol.get(index)]+=200;
+								writer.append("(" + tempi + "," + j + ") row findmy3 "+ 200 +"\n");
+							}
 							index++;
 						}
 						break;
+					case 6:
+						System.out.println("you lose...");
+						System.exit(0);
 
 					}
 
@@ -232,7 +260,7 @@ public class Row {
 		}
 	}
 
-	void findEnemyFive() {
+	void findEnemyFive() throws IOException {
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
 		for(int i=0;i<map.length-6+1;i++) {
@@ -258,6 +286,7 @@ public class Row {
 					for(tempi=i;tempi<i+6;tempi++) {
 						if(scoreMap[tempi][j]!=-10000&&(scoreMap[tempi][j]==0||scoreMap[tempi][j]>3)) {
 							scoreMap[tempi][j]=3;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+							writer.append("(" + tempi + "," + j + ") row findmy5 "+ 3 +"\n");
 						}
 					}
 
@@ -270,9 +299,9 @@ public class Row {
 		}
 
 	}
-		
-	void findEnemyFour() {
-		
+
+	void findEnemyFour() throws IOException {
+
 		int[] unit = new int[6];
 		for(int i=0;i<map.length-6+1;i++) {
 			for(int j=0;j<map.length;j++) {
@@ -297,6 +326,7 @@ public class Row {
 					for(tempi=i;tempi<i+6;tempi++) {
 						if(scoreMap[tempi][j]!=-10000&&(scoreMap[tempi][j]==0||scoreMap[tempi][j]>4.2)) {
 							scoreMap[tempi][j]+=4.2;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+							writer.append("(" + tempi + "," + j + ") row findmy4 "+ 4.2 +"\n");
 						}
 					}
 

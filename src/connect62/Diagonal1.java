@@ -144,6 +144,9 @@ public class Diagonal1 {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 100점 드립니다~
 						}
 						break;
+					case 6:
+						System.out.println("you win...");
+						System.exit(0);
 
 
 
@@ -220,6 +223,9 @@ public class Diagonal1 {
 							index++;
 						}
 						break;
+					case 6:
+						System.out.println("you lose...");
+						System.exit(0);
 				
 					}
 
@@ -261,6 +267,8 @@ public class Diagonal1 {
 
 
 				}
+				
+				
 			}
 
 

@@ -1,8 +1,10 @@
 package connect62;
 
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Compute {
+	
 	int[][]map;
 	double[][]scoreMap;
 	int[]result=new int[2];
@@ -12,21 +14,24 @@ public class Compute {
 	Row row;
 	Diagonal2 diagonal2;
 	Make4by4 make4by4;
+	FileWriter writer;
 
 	Compute(int[][]map, int myColor) throws IOException{
 		this.map = map;
 		this.myColor =myColor;
 		scoreMap = new double[map.length][map.length];
 		makeClean(scoreMap);
-		column = new Column(map, scoreMap, myColor);
-		diagonal1 = new Diagonal1(map, scoreMap, myColor);
-		row = new Row(map,scoreMap, myColor);
-		diagonal2 = new Diagonal2(map, scoreMap, myColor);
-		make4by4 = new Make4by4(map,scoreMap, myColor);
+		
 
 	}
 
 	public void execute() throws IOException{
+		FileWriter writer = new FileWriter("log.txt");
+		column = new Column(map, scoreMap, myColor, writer);
+		diagonal1 = new Diagonal1(map, scoreMap, myColor);
+		row = new Row(map,scoreMap, myColor,writer);
+		diagonal2 = new Diagonal2(map, scoreMap, myColor);
+		make4by4 = new Make4by4(map,scoreMap, myColor);
 		//자 이건 실행을 하는 함수야
 		//이미 둔 돌에는 점수를 넣으면 안되자나. 그러니까 이미 돌이 있는 곳에는 -10000점을 줄거야.
 		checkAlreadyDone();
@@ -48,8 +53,9 @@ public class Compute {
 		result=findResult();
 		map[result[0]][result[1]]= myColor;
 		//그리고 어디다 놓아야 하는지 예쁘게 출력해주는거야
-		System.out.println("first Row : " + result[0] +" frist Col : " + result[1]);
-		
+		System.out.println("second Row : " + result[0] +" second Col : " + result[1]);
+		writer.close();
+
 	}
 
 	//1번부터 만들게
@@ -58,8 +64,7 @@ public class Compute {
 		for(int i=0;i<scoreMap2.length;i++) {
 			System.out.println(" ");
 			for(int j=0;j<scoreMap2.length;j++) {
-
-				System.out.printf("%10.1f|" ,scoreMap2[i][j]);
+				System.out.printf("%10.1f|",scoreMap2[i][j]);
 
 			
 			}
