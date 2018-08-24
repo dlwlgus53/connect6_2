@@ -1,5 +1,6 @@
 package connect62;
 import java.util.ArrayList;
+import java.io.*;
 
 
 public class Column {
@@ -8,15 +9,17 @@ public class Column {
 	int[][]map;
 	int myColor;
 	int enemyColor;
-
-	Column(int[][] map,double[][]scoreMap,int myColor){
+	FileWriter writer = new FileWriter("log.txt");;
+	
+	Column(int[][] map,double[][]scoreMap,int myColor) throws IOException{
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;
 		enemyColor = myColor*-1;
+	
 	}
 
-	double[][] execute() {
+	double[][] execute() throws IOException {
 		findMyFive();
 		findMyFour();
 		findEnemyFive();
@@ -26,7 +29,7 @@ public class Column {
 		return scoreMap;
 	}
 
-	void findMyFive() {
+	void findMyFive() throws IOException {
 
 		int[] unit = new int[6];
 		for(int i=0;i<map.length;i++) {
@@ -52,7 +55,9 @@ public class Column {
 
 					for(tempj=j;tempj<j+6;tempj++) {
 						if(scoreMap[i][tempj]!=-10000&&(scoreMap[i][tempj]==0||scoreMap[i][tempj]>1)) {
+							
 							scoreMap[i][tempj]=1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+							writer.write("(" + i + ", " + j + ") col findmy5 " + 1);
 						}
 					}
 
@@ -65,7 +70,7 @@ public class Column {
 		}
 	}
 	
-	void findMyFour() {
+	void findMyFour() throws IOException {
 		int[] unit = new int[6];
 		for(int i=0;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
@@ -91,6 +96,7 @@ public class Column {
 					for(tempj=j;tempj<j+6;tempj++) {
 						if(scoreMap[i][tempj]!=-10000&&(scoreMap[i][tempj]==0||scoreMap[i][tempj]>2.1)) {
 							scoreMap[i][tempj]=2.1;//이거는 2.1
+							writer.write("(" + i + ", " + j + ") col findmy4 "+ 2.1);
 						}
 					}
 
@@ -103,7 +109,7 @@ public class Column {
 		}
 	}
 	
-	void findMine() {
+	void findMine() throws IOException {
 
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
@@ -113,7 +119,7 @@ public class Column {
 				unit=copyToUnit(unit,i,j);
 
 				int k=0;
-				int count=0;
+				int count=0; 
 
 				boolean isEnemy=false;
 
@@ -132,12 +138,14 @@ public class Column {
 						for(tempj=j;tempj<j+6;tempj++) {
 							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0)
 								scoreMap[i][tempj]+=20;//내 돌 근처에 20점 드립니다~
+								writer.write("(" + i + ", " + j + ") col findmy1 "+ 20);
 						}
 						break;
 					case 2 : 
 						for(tempj=j;tempj<j+6;tempj++) {
 							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0)
 								scoreMap[i][tempj]+=20;//6개 안에 2개 있을때 내 돌 근처에 20점 드립니다~
+							writer.write("(" + i + ", " + j + ") col findmy2 "+ 20);
 						} 
 						break;
 
@@ -145,6 +153,7 @@ public class Column {
 						for(tempj=j;tempj<j+6;tempj++) {
 							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0)
 								scoreMap[i][tempj]+=100;//6칸에 3개만있고 상대방 돌 없으면 100점줍니다.
+								writer.write("(" + i + ", " + j + ") col findmy3 "+ 100);
 						}
 						break;
 					}

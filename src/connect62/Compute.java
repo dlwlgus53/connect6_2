@@ -1,5 +1,7 @@
 package connect62;
 
+import java.io.IOException;
+
 public class Compute {
 	int[][]map;
 	double[][]scoreMap;
@@ -11,7 +13,7 @@ public class Compute {
 	Diagonal2 diagonal2;
 	Make4by4 make4by4;
 
-	Compute(int[][]map, int myColor){
+	Compute(int[][]map, int myColor) throws IOException{
 		this.map = map;
 		this.myColor =myColor;
 		scoreMap = new double[map.length][map.length];
@@ -24,7 +26,7 @@ public class Compute {
 
 	}
 
-	public void execute(){
+	public void execute() throws IOException{
 		//자 이건 실행을 하는 함수야
 		//이미 둔 돌에는 점수를 넣으면 안되자나. 그러니까 이미 돌이 있는 곳에는 -10000점을 줄거야.
 		checkAlreadyDone();
@@ -57,7 +59,7 @@ public class Compute {
 			System.out.println(" ");
 			for(int j=0;j<scoreMap2.length;j++) {
 
-				System.out.printf("%5d|" ,scoreMap2[i][j]);
+				System.out.printf("%10.1f|" ,scoreMap2[i][j]);
 
 			
 			}

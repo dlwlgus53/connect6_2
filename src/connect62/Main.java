@@ -1,9 +1,10 @@
 package connect62;
+import java.io.IOException;
 import java.util.Scanner;
 public class Main {
 	static Scanner scan = new Scanner(System.in);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		//처음부터 할게
 		//맵을 만들자
 		System.out.println("맵 크기를 알려주세요");
