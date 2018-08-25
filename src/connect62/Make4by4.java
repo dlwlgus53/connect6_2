@@ -83,8 +83,10 @@ public class Make4by4 {
 					
 					if(target[0]==true) {//column
 						for(tempi=i,tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
 								scoreMap[tempi][tempj]+=100;//
+								
+							}
 						}//this is for targetColumn
 					}
 					if(target[1]==true) {//row

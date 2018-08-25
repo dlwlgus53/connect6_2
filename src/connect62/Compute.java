@@ -28,9 +28,9 @@ public class Compute {
 	public void execute() throws IOException{
 		FileWriter writer = new FileWriter("log.txt");
 		column = new Column(map, scoreMap, myColor, writer);
-		diagonal1 = new Diagonal1(map, scoreMap, myColor);
+		diagonal1 = new Diagonal1(map, scoreMap, myColor, writer);
 		row = new Row(map,scoreMap, myColor,writer);
-		diagonal2 = new Diagonal2(map, scoreMap, myColor);
+		diagonal2 = new Diagonal2(map, scoreMap, myColor, writer);
 		make4by4 = new Make4by4(map,scoreMap, myColor);
 		//자 이건 실행을 하는 함수야
 		//이미 둔 돌에는 점수를 넣으면 안되자나. 그러니까 이미 돌이 있는 곳에는 -10000점을 줄거야.

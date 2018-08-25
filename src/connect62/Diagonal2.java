@@ -1,6 +1,7 @@
 package connect62;
 
 import java.util.ArrayList;
+import java.io.*;
 
 public class Diagonal2{
 
@@ -8,15 +9,18 @@ public class Diagonal2{
 	int[][]map;
 	int myColor;
 	int enemyColor;
+	FileWriter writer;
 
-	Diagonal2(int[][] map,double[][]scoreMap,int myColor){
+
+	Diagonal2(int[][] map,double[][]scoreMap,int myColor ,FileWriter writer){
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;
 		enemyColor = myColor*-1;
+		this.writer = writer;
 	}
 
-	double[][] execute() {
+	double[][] execute() throws IOException{
 		findMyFive();
 		findMyFour();
 		findMine();
@@ -26,7 +30,7 @@ public class Diagonal2{
 		return scoreMap;
 	}
 
-	void findMyFive(){
+	void findMyFive() throws IOException{
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
 			for(int j=5;j<map.length;j++) {
@@ -48,8 +52,9 @@ public class Diagonal2{
 
 				if(isEnemy==false&&count==5) {
 					for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-						if(scoreMap[tempi][tempj]!=-10000) {
-							scoreMap[tempi][tempj]+=1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+						if(scoreMap[tempi][tempj]!=-10000&&(scoreMap[tempi][tempj]==0||scoreMap[tempi][tempj]>1)) {
+							scoreMap[tempi][tempj]=1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+							writer.append("(" + tempi + "," + tempj + ") dia2 findmy5 "+ 1 +"\n");
 						}
 					}
 
@@ -61,7 +66,7 @@ public class Diagonal2{
 		}
 	}
 
-	void findMyFour(){
+	void findMyFour() throws IOException{
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
 			for(int j=5;j<map.length;j++) {
@@ -83,8 +88,9 @@ public class Diagonal2{
 
 				if(isEnemy==false&&count==4) {
 					for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-						if(scoreMap[tempi][tempj]!=-10000) {
-							scoreMap[tempi][tempj]+=2.4;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+						if(scoreMap[tempi][tempj]!=-10000&&(scoreMap[tempi][tempj]==0||scoreMap[tempi][tempj]>2.4)){
+							scoreMap[tempi][tempj]=2.4;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+							writer.append("(" + tempi + "," + tempj + ") dia2 findmy4 "+ 2.4 +"\n");
 						}
 					}
 
@@ -97,7 +103,7 @@ public class Diagonal2{
 	}
 
 
-	void findMine() {//칸6개씩 볼거야, 근데 거기에 내꺼3개가 있으면 다른거 상관안하고 당장 거기다 놓아야 하자나 그래서 가산점을 줄거야, 근데 남의 돌이 중간에 끼어 있을수있다는걸
+	void findMine() throws IOException {//칸6개씩 볼거야, 근데 거기에 내꺼3개가 있으면 다른거 상관안하고 당장 거기다 놓아야 하자나 그래서 가산점을 줄거야, 근데 남의 돌이 중간에 끼어 있을수있다는걸
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
@@ -124,24 +130,30 @@ public class Diagonal2{
 					case 1 : 
 						for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
 
-							if(scoreMap[tempi][tempj]!=-10000)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
 								scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
+								writer.append("(" + tempi + "," + tempj + ") dia2 findmy1 "+ 20 +"\n");
+							}
 						}
 						break;
 					case 2 : 
 						for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0){
 								scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
+								writer.append("(" + tempi + "," + tempj + ") dia2 findmy2 "+ 20 +"\n");
+							}
 						}
 						break;
 
 					case 3 : 
 						for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 100점 드립니다~
+								writer.append("(" + tempi + "," + tempj + ") dia2 findmy3 "+ 100 +"\n");
+							}
 						}
 						break;
-						
+
 					case 6:
 						System.out.println("you win...");
 						System.exit(0);
@@ -158,7 +170,7 @@ public class Diagonal2{
 
 
 
-	void findEnemy() {//6칸을 유닛으로 떼어 내 그래서 그 6칸안에 상대방 돌이 있으면 나머지 칸에 점수를 10점 부여해
+	void findEnemy() throws IOException {//6칸을 유닛으로 떼어 내 그래서 그 6칸안에 상대방 돌이 있으면 나머지 칸에 점수를 10점 부여해
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 		int[] unit = new int[6];//6개씩 떼어서 생각
@@ -191,35 +203,45 @@ public class Diagonal2{
 					switch(count) {
 					case 1:
 						for(tempj=j,tempi=i;tempi>i-6;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000) scoreMap[tempi][tempj]+=10;
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+								scoreMap[tempi][tempj]+=10;
+								writer.append("(" + tempi + "," + tempj + ") dia2 findene1 "+ 10 +"\n");
+							}
 
 						}
 						break;
 					case 2:
 						for(tempj=j,tempi=i;tempi>i-6;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000) scoreMap[tempi][tempj]+=10;
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0){
+								scoreMap[tempi][tempj]+=10;
+								writer.append("(" + tempi + "," + tempj + ") dia2 findene2 "+ 10 +"\n");
+							}
 
 						}
 						break;
 					case 3:
 						for(tempi=i, tempj=j;tempi>i-6;tempj--,tempi--) {
-							if(tempj-1>=0&&tempi-1>=0) {
+							if(scoreMap[tempi][tempj]==-10000&&tempj-1>=0&&tempi-1>=0) {
 								listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
 								listCol.add(tempj-1);
 							}
-							if(tempj+1<map.length&&tempi+1<map.length) {
+							if(scoreMap[tempi][tempj]==-10000&&tempj+1<map.length&&tempi+1<map.length) {
 								listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
 								listCol.add(tempj+1);
 							}
 						}
 
 						while(index<listRow.size()) {
-							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
+							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
+									scoreMap[listRow.get(index)][listCol.get(index)]%10==0) {
 								scoreMap[listRow.get(index)][listCol.get(index)]+=200;
+								writer.append("(" + tempi + "," + tempj + ") dia2 findene3 "+ 200 +"\n");
+							}
+
 							index++;
 						}
 						break;
-						
+
 					case 6:
 						System.out.println("you lose...");
 						System.exit(0);
@@ -236,7 +258,7 @@ public class Diagonal2{
 
 
 
-	void findEnemyFive() {
+	void findEnemyFive() throws IOException {
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
 			for(int j=5;j<map.length;j++) {
@@ -258,8 +280,9 @@ public class Diagonal2{
 
 				if(isMine==false&&count==5) {
 					for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-						if(scoreMap[tempi][tempj]!=-10000) {
-							scoreMap[tempi][tempj]+=3;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+						if(scoreMap[tempi][tempj]!=-10000&&(scoreMap[tempi][tempj]==0||scoreMap[tempi][tempj]>3)) {
+							scoreMap[tempi][tempj]=3;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+							writer.append("(" + tempi + "," + tempj + ") dia2 findene5 "+ 3 +"\n");
 						}
 					}
 
@@ -274,7 +297,9 @@ public class Diagonal2{
 
 	}
 
-	void findEnemyFour() {
+	void findEnemyFour() throws IOException {
+		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
+		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
 			for(int j=5;j<map.length;j++) {
@@ -285,6 +310,9 @@ public class Diagonal2{
 				int count=0;
 				int tempj=j;
 				int tempi=i;
+				int index=0;
+				listRow.clear();
+				listCol.clear();
 				boolean isMine=false;
 
 				for(k=0;k<6;k++) {
@@ -295,11 +323,34 @@ public class Diagonal2{
 				}
 
 				if(isMine==false&&count==4) {
-					for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-						if(scoreMap[tempi][tempj]!=-10000) {
-							scoreMap[tempi][tempj]+=4.4;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+					for(tempi=i, tempj=j;tempi>i-6;tempj--,tempi--) {
+						if(scoreMap[tempi][tempj]==-10000&&tempj-1>=0&&tempi-1>=0) {
+							listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
+							listCol.add(tempj-1);
+						}
+						if(scoreMap[tempi][tempj]==-10000&&tempj+1<map.length&&tempi+1<map.length) {
+							listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
+							listCol.add(tempj+1);
 						}
 					}
+
+					while(index<listRow.size()) {
+						if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
+								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
+								scoreMap[listRow.get(index)][listCol.get(index)]>4.4)){
+							scoreMap[listRow.get(index)][listCol.get(index)]=4.4;
+							writer.append("(" + tempi + "," + tempj + ") dia2 findene4 "+ 4.4 +"\n");
+						}
+
+						index++;
+					}
+					/*
+					for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
+						if(scoreMap[tempi][tempj]!=-10000&&(scoreMap[tempi][tempj]==0||scoreMap[tempi][tempj]>4.4)) {
+							scoreMap[tempi][tempj]=4.4;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+							writer.append("(" + tempi + "," + tempj + ") dia2 findene5 "+ 4.4 +"\n");
+						}
+					}*/
 
 
 				}

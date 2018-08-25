@@ -221,11 +221,11 @@ public class Column {
 
 					case 3:
 						for(tempj=j;tempj<j+6;tempj++) {
-							if(tempj>=1) {
+							if(scoreMap[i][tempj]==-10000&&tempj>=1) {
 								listRow.add(i);//왼쪽..에만둘게..?
 								listCol.add(tempj-1);
 							}
-							if(tempj<=map.length-1) {
+							if(scoreMap[i][tempj]==-10000&&tempj<=map.length-1) {
 								listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
 								listCol.add(tempj+1);
 							}
@@ -255,6 +255,7 @@ public class Column {
 	}
 
 	void findEnemyFive() throws IOException {
+
 		int[] unit = new int[6];
 		for(int i=0;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
@@ -273,6 +274,8 @@ public class Column {
 					if(unit[k]==enemyColor)
 						count++;
 				}
+
+
 
 				if(isMine==false && count==5) {
 					int tempj=j;
@@ -294,6 +297,9 @@ public class Column {
 	}
 
 	void findEnemyFour() throws IOException {
+		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
+		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
+
 		int[] unit = new int[6];
 		for(int i=0;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
@@ -302,19 +308,48 @@ public class Column {
 
 				int k=0;
 				int count=0;
-
+				int index = 0;
+				listRow.clear();
+				listCol.clear();
 				boolean isMine=false;
 
 
 				for(k=0;k<6;k++) {
 					if(unit[k]==myColor)
-						isMine = false;
+						isMine = true;
 					if(unit[k]==enemyColor)
 						count++;
 				}
 
-				if(isMine==false && count==4) {
-					int tempj=j;
+
+
+				if (isMine==false && count==4) {
+					int tempj = j;
+					for(tempj=j;tempj<j+6;tempj++) {
+						if(scoreMap[i][tempj]==-10000&&tempj>=1) {
+							listRow.add(i);//왼쪽..에만둘게..?
+							listCol.add(tempj-1);
+						}
+						if(scoreMap[i][tempj]==-10000&&tempj<=map.length-1) {
+							listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+							listCol.add(tempj+1);
+						}
+					}
+
+					while(index<listRow.size()) {
+					if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
+							(scoreMap[listRow.get(index)][listCol.get(index)]==0||
+							scoreMap[listRow.get(index)][listCol.get(index)]>4.1)){
+						scoreMap[listRow.get(index)][listCol.get(index)]=4.1;
+						writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") col findene4 "+ 4.1 +"\n");
+					}
+					index++;
+					}
+				}
+
+
+				/*if(isMine==false && count==4) {
+
 
 					for(tempj=j;tempj<j+6;tempj++) {
 						if(scoreMap[i][tempj]!=-10000&&(scoreMap[i][tempj]==0||scoreMap[i][tempj]>4.1)) {
@@ -322,17 +357,18 @@ public class Column {
 							scoreMap[i][tempj]=4.1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
 						}
 					}
+				 */
 
 
 
-				}
 			}
-
-
 		}
 
 
 	}
+
+
+
 
 	int[]copyToUnit(int[]unit, int row, int col){
 
