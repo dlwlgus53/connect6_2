@@ -231,12 +231,12 @@ public class Row {
 					case 3:
 						for(tempi=i;tempi<i+6;tempi++) {
 							if(scoreMap[tempi][j]==-10000&&tempi>=1) {
-								listRow.add(i);//왼쪽..에만둘게..?
-								listCol.add(tempi-1);
+								listRow.add(tempi-1);//왼쪽..에만둘게..?
+								listCol.add(j);
 							}
 							if(scoreMap[tempi][j]==-10000&&tempi<map.length-1) {//이고  dia1도 수정해야 하는부분
-								listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
-								listCol.add(tempi+1);
+								listRow.add(tempi+1);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+								listCol.add(j);
 							}
 						}
 						while(index<listRow.size()) {
@@ -305,6 +305,7 @@ public class Row {
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 
 		int[] unit = new int[6];
+		
 		for(int i=0;i<map.length-6+1;i++) {
 			for(int j=0;j<map.length;j++) {
 
@@ -329,12 +330,12 @@ public class Row {
 					int tempi = i;
 					for(tempi=i;tempi<i+6;tempi++) {
 						if(scoreMap[tempi][j]==-10000&&tempi>=1) {
-							listRow.add(i);//왼쪽..에만둘게..?
-							listCol.add(tempi-1);
+							listRow.add(tempi-1);//왼쪽..에만둘게..?
+							listCol.add(j);
 						}
 						if(scoreMap[tempi][j]==-10000&&tempi<map.length-1) {//이고  dia1도 수정해야 하는부분
-							listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
-							listCol.add(tempi+1);
+							listRow.add(tempi+1);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+							listCol.add(j);
 						}
 					}
 
@@ -345,6 +346,7 @@ public class Row {
 								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
 								scoreMap[listRow.get(index)][listCol.get(index)]>4.2)){
 							scoreMap[listRow.get(index)][listCol.get(index)]=4.2;
+							System.out.println("여기야?");
 							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") row findene4 "+ 4.2 +"\n");
 						}
 						index++;

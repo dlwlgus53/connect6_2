@@ -334,7 +334,10 @@ public class Diagonal2{
 						}
 					}
 
-					while(index<listRow.size()) {
+
+
+					
+					
 						if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
 								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
 								scoreMap[listRow.get(index)][listCol.get(index)]>4.4)){

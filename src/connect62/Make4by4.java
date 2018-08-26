@@ -1,5 +1,7 @@
 package connect62;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Make4by4 {
@@ -8,21 +10,23 @@ public class Make4by4 {
 	int[][]map;
 	int myColor;
 	int enemyColor;
+	FileWriter writer; 
 
-	Make4by4(int[][] map,double[][]scoreMap,int myColor){
+	Make4by4(int[][] map,double[][]scoreMap,int myColor,FileWriter writer){
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;
 		enemyColor = myColor*-1;
+		this.writer = writer;
 	}
 
-	double[][] execute() {
+	double[][] execute() throws IOException {
 		findMine();
 		return scoreMap;
 	}
 
 
-	void findMine() {
+	void findMine() throws IOException {
 
 		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] colUnit = new int[6];
@@ -85,28 +89,35 @@ public class Make4by4 {
 						for(tempi=i,tempj=j;tempj<j+6;tempj++) {
 							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
 								scoreMap[tempi][tempj]+=100;//
-								
+								writer.append("(" + tempi + "," + tempj + ") col4by4 " + 100 +"\n");
 							}
 						}//this is for targetColumn
 					}
 					if(target[1]==true) {//row
 						for(tempj=j,tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
+								writer.append("(" + tempi + "," + tempj + ") row4by4 " + 100 +"\n");
+							}
 						}
 
 					}
 					if(target[2]==true) {//dia1
 						for(tempj=j,tempi=i ;tempj<j+6;tempi--,tempj++) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
+								writer.append("(" + tempi + "," + tempj + ") dia14by4 " + 100 +"\n");
+							}
 						}
 
 					}
 					if(target[3]==true) {//dai2
 						for(tempj=j,tempi=i;tempj<j+6;tempj++,tempi--) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0)
+							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
+								writer.append("(" + tempi + "," + tempj + ") dia24by4 " + 100 +"\n");
+							}
+							
 						}
 
 					}

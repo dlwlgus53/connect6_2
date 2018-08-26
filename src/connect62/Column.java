@@ -311,6 +311,7 @@ public class Column {
 				int index = 0;
 				listRow.clear();
 				listCol.clear();
+				
 				boolean isMine=false;
 
 
