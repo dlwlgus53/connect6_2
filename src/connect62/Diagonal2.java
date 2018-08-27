@@ -234,8 +234,8 @@ public class Diagonal2{
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
 									scoreMap[listRow.get(index)][listCol.get(index)]%10==0) {
-								scoreMap[listRow.get(index)][listCol.get(index)]+=200;
-								writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 findene3 "+ 200 +"\n");
+								scoreMap[listRow.get(index)][listCol.get(index)]+=20;
+								writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 findene3 "+ 20 +"\n");
 							}
 
 							index++;

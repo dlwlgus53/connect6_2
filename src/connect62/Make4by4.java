@@ -38,9 +38,9 @@ public class Make4by4 {
 			for(int j=0;j<map.length;j++) {
 
 				colUnit=copyToColUnit(colUnit,i,j);//col으로 받아용
-				rowUnit=copyToRowUnit(colUnit,i,j);//row으로 받아용
-				dia1Unit=copyToDia1Unit(colUnit,i,j);//dia1방향으로 받아용
-				dia2Unit=copyToDia2Unit(colUnit,i,j);//dia2방향으로 받아용
+				rowUnit=copyToRowUnit(rowUnit,i,j);//row으로 받아용
+				dia1Unit=copyToDia1Unit(dia1Unit,i,j);//dia1방향으로 받아용
+				dia2Unit=copyToDia2Unit(dia2Unit,i,j);//dia2방향으로 받아용
 
 				int k=0;
 				int colCount=0;

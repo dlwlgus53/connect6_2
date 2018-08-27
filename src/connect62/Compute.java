@@ -14,6 +14,7 @@ public class Compute {
 	Row row;
 	Diagonal2 diagonal2;
 	Make4by4 make4by4;
+	AboutEnemy3 aboutEnemy3;
 	FileWriter writer;
 
 	Compute(int[][]map, int myColor) throws IOException{
@@ -26,13 +27,15 @@ public class Compute {
 	}
 
 	public void execute() throws IOException{
+		
 		FileWriter writer = new FileWriter("log.txt");
 		column = new Column(map, scoreMap, myColor, writer);
 		diagonal1 = new Diagonal1(map, scoreMap, myColor, writer);
 		row = new Row(map,scoreMap, myColor,writer);
 		diagonal2 = new Diagonal2(map, scoreMap, myColor, writer);
 		make4by4 = new Make4by4(map,scoreMap, myColor,writer);
-		int turn=0;
+		aboutEnemy3 = new AboutEnemy3(map,scoreMap, myColor,writer);
+		
 		
 		
 		//자 이건 실행을 하는 함수야
@@ -44,6 +47,7 @@ public class Compute {
 		scoreMap = row.execute();
 		scoreMap = diagonal2.execute();
 		scoreMap = make4by4.execute();
+		scoreMap = aboutEnemy3.execute();
 		//그런다음 점수맵을 프린트해보고.
 		printMap(scoreMap);
 		//result에는 어디다 돌을 두어야 하는지가 나와.

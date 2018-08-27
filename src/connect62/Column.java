@@ -149,7 +149,7 @@ public class Column {
 						for(tempj=j;tempj<j+6;tempj++) {
 							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0) {
 								scoreMap[i][tempj]+=20;//6개 안에 2개 있을때 내 돌 근처에 20점 드립니다~
-								writer.append("(" + i + "," + tempj + ") col findmy2 "+ 40 +"\n");
+								writer.append("(" + i + "," + tempj + ") col findmy2 "+ 20 +"\n");
 							}
 						} 
 						break;
@@ -233,8 +233,8 @@ public class Column {
 						while(index<listRow.size()) {
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
 									scoreMap[listRow.get(index)][listCol.get(index)]%10==0)
-							{scoreMap[listRow.get(index)][listCol.get(index)]+=200;
-							writer.append("(" + i + "," + listCol.get(index) + ") col findene3 "+ 200 +"\n");
+							{scoreMap[listRow.get(index)][listCol.get(index)]+=20;
+							writer.append("(" + i + "," + listCol.get(index) + ") col findene3 "+ 20 +"\n");
 							}
 
 							index++;
