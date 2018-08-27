@@ -140,7 +140,7 @@ public class Diagonal2{
 						for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
 							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0){
 								scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
-								writer.append("(" + tempi + "," + tempj + ") dia2 findmy2 "+ 20 +"\n");
+								writer.append("(" + tempi + "," + tempj + ") dia2 findmy2 "+ 40 +"\n");
 							}
 						}
 						break;
@@ -235,7 +235,7 @@ public class Diagonal2{
 							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
 									scoreMap[listRow.get(index)][listCol.get(index)]%10==0) {
 								scoreMap[listRow.get(index)][listCol.get(index)]+=200;
-								writer.append("(" + tempi + "," + tempj + ") dia2 findene3 "+ 200 +"\n");
+								writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 findene3 "+ 200 +"\n");
 							}
 
 							index++;
@@ -336,7 +336,7 @@ public class Diagonal2{
 
 
 
-					
+					while(index<listRow.size()) {
 					
 						if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
 								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
@@ -358,11 +358,13 @@ public class Diagonal2{
 
 				}
 			}
+		}
+		
 
 
 		}
 
-	}
+	
 
 
 
