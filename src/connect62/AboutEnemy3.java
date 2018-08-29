@@ -68,9 +68,9 @@ public class AboutEnemy3 {
 		int targetCount=0;
 
 		if(isColTarget==true)	targetCount++;
-		if(isColTarget==true)	targetCount++;
-		if(isColTarget==true)	targetCount++;
-		if(isColTarget==true)	targetCount++;
+		if(isRowTarget==true)	targetCount++;
+		if(isDia1Target==true)	targetCount++;
+		if(isDia2Target==true)	targetCount++;
 		//타겟이 몇개인지 체크
 		int index = 0;
 		//두개이상이면 일을 시작해야하지..

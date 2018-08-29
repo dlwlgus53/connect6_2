@@ -15,7 +15,7 @@ public class Main {
 		makeClean(map);
 		
 		//그다음 내가 검은돌인지 흰돌인지를 입력받아야해.
-		System.out.println("검은돌이면 -1 입력, 흰돌이면 1 입력 해주세요.");
+		System.out.println("컴퓨터가  검은돌이면 -1  흰돌이면 1");
 		int myColor = scan.nextInt();
 		
 		//검은돌이면 맵 중앙에 표시해야하자나?? 그래서 사이즈를 절반으로 나눈값에다가 -1 표시를 할게
@@ -60,20 +60,28 @@ public class Main {
 	}
 	
 	static void enemyInput(int[][]map, int myColor) {
-		int x1,y1,x2,y2;
-		//물어보는 착한 친구 컴퓨터친구:)
-		
-		System.out.println("상대방의 x1을 입력하세요");
+		int x1=0,y1=0,x2=0,y2=0;
+		int temp=0;
+		boolean isRight= false;
+		//물어보는 착한 친구 컴퓨터친구:) 
+		while(isRight==false) {
+		System.out.println("당신의 x1을 입력하세요");
 		x1 = scan.nextInt();
 		
-		System.out.println("상대방의 y1을 입력하세요");
+		System.out.println("당신의 y1을 입력하세요");
 		y1 = scan.nextInt();
 		
-		System.out.println("상대방의 x2를 입력하세요");
+		System.out.println("당신의 x2를 입력하세요");
 		x2 = scan.nextInt();
 		
-		System.out.println("상대방의 y2를 입력하세요");
+		System.out.println("당신의 y2를 입력하세요");
 		y2 = scan.nextInt();
+		
+		System.out.println("제대로 입력하셨나요? 맞으면1, 틀리면0을 입력해 주세요");
+		
+		temp = scan.nextInt();
+		if(temp==1)	isRight=true;	
+		}
 		
 		//이제 입력받은거를 맵에 기록해주자
 		map[x1][y1] = myColor*-1;//내 컬러에서 -1곱해주면 상대방 색이 되, 너무 좋은생각 아니니?! 지현이 짱짱
