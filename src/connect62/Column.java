@@ -435,16 +435,6 @@ public class Column {
 				}
 
 
-				/*if(isMine==false && count==4) {
-
-
-					for(tempj=j;tempj<j+6;tempj++) {
-						if(scoreMap[i][tempj]!=-10000&&(scoreMap[i][tempj]==0||scoreMap[i][tempj]>4.1)) {
-							writer.append("(" + i + "," + tempj + ") col findene4 "+ 4.1 +"\n");
-							scoreMap[i][tempj]=4.1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
-						}
-					}
-				 */
 
 
 

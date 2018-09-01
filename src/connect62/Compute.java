@@ -22,13 +22,13 @@ public class Compute {
 		this.map = map;
 		this.myColor =myColor;
 		scoreMap = new double[map.length][map.length];
-		makeClean(scoreMap);
+
 		
 
 	}
 
 	public void execute() throws IOException{
-		
+		makeClean(scoreMap);
 		FileWriter writer = new FileWriter("log.txt");
 		column = new Column(map, scoreMap, myColor, writer);
 		diagonal1 = new Diagonal1(map, scoreMap, myColor, writer);
@@ -37,6 +37,7 @@ public class Compute {
 		make4by4 = new Make4by4(map,scoreMap, myColor,writer);
 		aboutEnemy3 = new AboutEnemy3(map,scoreMap, myColor,writer);
 		findTwoEnemy3 = new FindTwoEnemy3(map,scoreMap,myColor,writer);
+	
 		
 		
 		

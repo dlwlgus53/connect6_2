@@ -30,7 +30,6 @@ public class Main {
 		//print(Compute.result);
 		printMap(map);
 		compute.execute();
-		
 		}
 		
 		

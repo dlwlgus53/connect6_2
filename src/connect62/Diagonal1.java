@@ -421,7 +421,7 @@ public class Diagonal1 {
 						}
 						if(scoreMap[tempi][tempj]==-10000&&tempj+1>=0&&tempj+1<map.length) {
 							listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
-							listCol.add(tempj+1);
+							listCol.add(tempj-1);
 						}
 					}
 					
