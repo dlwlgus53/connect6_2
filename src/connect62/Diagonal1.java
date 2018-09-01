@@ -10,7 +10,8 @@ public class Diagonal1 {
 	int myColor;
 	int enemyColor;
 	FileWriter writer; 
-
+	FindBetter findBetter;
+	
 	Diagonal1(int[][] map,double[][]scoreMap,int myColor, FileWriter writer){
 		this.map = map;
 		this.scoreMap = scoreMap;
@@ -20,6 +21,7 @@ public class Diagonal1 {
 	}
 
 	double[][] execute() throws IOException {
+		findBetter = new FindBetter(map,scoreMap,myColor);
 		findMyFive();
 		findMyFour();
 		findMine();
@@ -256,6 +258,7 @@ public class Diagonal1 {
 
 	}
 
+	
 	void findEnemyFive() throws IOException {
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
@@ -267,6 +270,10 @@ public class Diagonal1 {
 				int count=0;
 				int tempj=j;
 				int tempi=i;
+				int blank=0;
+				int blankRow=0;
+				int blankCol=0;
+
 				boolean isMine=false;
 
 				for(k=0;k<6;k++) {
@@ -276,23 +283,110 @@ public class Diagonal1 {
 						count++;
 				}
 
-				if(isMine==false&&count==5) {				
-					for(tempj=j,tempi=i;tempj<j+6&&tempi>i-6 ;tempj++,tempi--)  {
-						if(scoreMap[tempi][tempj]!=-10000&&(scoreMap[tempi][tempj]==0||scoreMap[tempi][tempj]>3)){
-							scoreMap[tempi][tempj]=3;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
-							writer.append("(" + tempi + "," + tempj + ") dia1 findene5 "+ 3 +"\n");
+				if(isMine==false&&count==5) {
+					
+
+					for(k=0;k<6;k++) {
+						if(unit[k]==0) {
+							blank=k;
+						}
+					}
+					
+					blankRow = i-blank;
+					blankCol = j+blank;
+					
+				
+					if(scoreMap[blankRow][blankCol]>3||scoreMap[blankRow][blankCol]==0) {
+						
+						scoreMap[blankRow][blankCol]=3;
+						writer.append("(" + blankRow + "," + blankCol + ") dia1 findEne5 "+ 3+"\n");							
+					}
+					
+
+					if(blank==0) {
+						if(i-6>=0&&j+6<map.length&&(scoreMap[i-6][j+6]>3||scoreMap[i-6][j+6]==0)){
+							scoreMap[i-6][j+6]=3;
+							writer.append("(" + (i-6) + "," + (j+6) + ") dia1 findEne5 "+ 3+"\n");	
+						}
+					}
+
+					if(blank==1) {
+						
+						if(i-6>=0&&j+6<map.length&&(scoreMap[i-6][j+6]>3||scoreMap[i-6][j+6]==0)){
+							scoreMap[i-6][j+6]=3;
+							writer.append("(" + (i-6) + "," + (j+6) + ") dia1 findEne5 "+ 3+"\n");	
+						}
+					}
+
+					if(blank==2||blank==3) {
+						boolean case1 = false;
+						boolean case2= false;
+						
+						if(i-6>=0&&j+6<map.length){
+							case1=true;//왼쪽 위
+						}
+						if(i+1<map.length&&j-1>=0){
+							case2 = true;//오른쪽 아래
+						}
+						if(case1==true && case2 ==false) {
+							if(scoreMap[i-6][j+6]>3||scoreMap[i-6][j+6]==0){
+								scoreMap[i-6][j+6]=3;
+								writer.append("(" + (i-6) + "," + (j+6) + ") dia1 findEne5 "+ 3+"\n");	
+							}
+
+						}
+
+						if(case1==false && case2==true) {
+							if(scoreMap[i+1][j-1]>3||scoreMap[i+1][j-1]==0){
+								scoreMap[i+1][j-1]=3;
+								writer.append("(" + (i+1) + "," + (j-1) + ") dia1 findEne5 "+ 3+"\n");	
+							}
+						}
+
+						if(case1==true && case2==true) {
+							int score1=findBetter.execute(i-6,j+6);
+							int score2=findBetter.execute(i+1, j-1);
+
+							if(score1>=score2) {
+								if(scoreMap[i-6][j+6]>3||scoreMap[i-6][j+6]==0){
+									scoreMap[i-6][j+6]=3;
+									writer.append("(" + (i-6) + "," + (j+6) + ") dia1 findEne5 "+ 3+"\n");	
+								}
+							}
+							else {
+								if(scoreMap[i+1][j-1]>3||scoreMap[i+1][j-1]==0){
+									scoreMap[i+1][j-1]=3;
+									writer.append("(" + (i+1) + "," + (j-1) + ") dia1 findEne5 "+ 3+"\n");	
+								}
+							}
+						}
+					
+					}
+					
+					if(blank==4) {
+						if(i+1<map.length&&j-1>=0&&(scoreMap[i+1][j-1]>3||scoreMap[i+1][j-1]==0)){
+							scoreMap[i+1][j-1]=3;
+							writer.append("(" + (i+1) + "," + (j-1) + ") dia1 findEne5 "+ 3+"\n");	
+						}
+					}
+
+					if(blank==5) {
+						if(i+1<map.length&&j-1>=0&&(scoreMap[i+1][j-1]>3||scoreMap[i+1][j-1]==0)){
+							scoreMap[i+1][j-1]=3;
+							writer.append("(" + (i+1) + "," + (j-1) + ") dia1 findEne5 "+ 3+"\n");	
 						}
 					}
 
 
+
 				}
-				
-				
 			}
-
-
 		}
 	}
+
+
+
+	
 	
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
@@ -325,9 +419,9 @@ public class Diagonal1 {
 							listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
 							listCol.add(tempj+1);
 						}
-						if(scoreMap[tempi][tempj]==-10000&&tempj-1>=0&&tempj+1<map.length) {
+						if(scoreMap[tempi][tempj]==-10000&&tempj+1>=0&&tempj+1<map.length) {
 							listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
-							listCol.add(tempj-1);
+							listCol.add(tempj+1);
 						}
 					}
 					

@@ -10,6 +10,7 @@ public class Row {
 	int myColor;
 	int enemyColor;
 	FileWriter writer;
+	FindBetter findBetter;
 
 	Row(int[][] map,double[][]scoreMap,int myColor, FileWriter writer) throws IOException{
 		this.map = map;
@@ -21,6 +22,7 @@ public class Row {
 	}
 
 	double[][] execute() throws IOException{
+		findBetter = new FindBetter(map,scoreMap,myColor);
 		findMyFive();
 		findMyFour();
 		findMine();
@@ -259,20 +261,24 @@ public class Row {
 			}
 		}
 	}
-
+	
 	void findEnemyFive() throws IOException {
-		//생각을 안해서 그걸 수정해서 넣어야해.//수정했슴당
 		int[] unit = new int[6];
 		for(int i=0;i<map.length-6+1;i++) {
 			for(int j=0;j<map.length;j++) {
+
 
 				unit=copyToUnit(unit,i,j);
 
 				int k=0;
 				int count=0;
+				int tempj=j;
+				int tempi=i;
+				int blank=0;
+				int blankRow=0;
+				int blankCol=0;
 
 				boolean isMine=false;
-
 
 				for(k=0;k<6;k++) {
 					if(unit[k]==myColor)
@@ -282,11 +288,95 @@ public class Row {
 				}
 
 				if(isMine==false&&count==5) {
-					int tempi=i;
-					for(tempi=i;tempi<i+6;tempi++) {
-						if(scoreMap[tempi][j]!=-10000&&(scoreMap[tempi][j]==0||scoreMap[tempi][j]>3)) {
-							scoreMap[tempi][j]=3;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
-							writer.append("(" + tempi + "," + j + ") row findmy5 "+ 3 +"\n");
+					
+
+					for(k=0;k<6;k++) {
+						if(unit[k]==0) {
+							blank=k;
+						}
+					}
+					
+					blankRow = i+blank;
+					blankCol = j;
+					
+				
+					
+					if(scoreMap[blankRow][blankCol]>3||scoreMap[blankRow][blankCol]==0) {
+						
+						scoreMap[blankRow][blankCol]=3;
+						writer.append("(" + blankRow + "," + blankCol + ") row findEne5 "+ 3+"\n");							
+					}
+
+					if(blank==0) {
+						if(i+6<map.length&&(scoreMap[i+6][j]>3||scoreMap[i+6][j]==0)){
+							scoreMap[i+6][j]=3;
+							writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
+						}
+					}
+
+					if(blank==1) {
+						
+						if(i+6<map.length&&(scoreMap[i+6][j]>3||scoreMap[i+6][j]==0)){
+							scoreMap[i+6][j]=3;
+							writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
+						}
+					}
+
+					if(blank==2||blank==3) {
+						boolean case1 = false;
+						boolean case2= false;
+						if(i+6<map.length){
+							case1=true;//왼쪽 위
+						}
+						if(i-1>=0){
+							case2 = true;//오른쪽 아래
+						}
+						if(case1==true && case2 ==false) {
+							if(scoreMap[i+6][j]>3||scoreMap[i+6][j]==0){
+								scoreMap[i+6][j]=3;
+								writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
+							}
+
+						}
+
+						if(case1==false && case2==true) {
+							if(scoreMap[i-1][j]>3||scoreMap[i-1][j]==0){
+								scoreMap[i-1][j]=3;
+								writer.append("(" + (i-1) + "," + (j) + ") row findEne5 "+ 3+"\n");	
+							}
+						}
+
+						if(case1==true && case2==true) {
+							int score1=findBetter.execute(i+6,j);
+							int score2=findBetter.execute(i-1, j);
+
+							if(score1>=score2) {
+								if(scoreMap[i+6][j]>3||scoreMap[i+6][j]==0){
+									scoreMap[i+6][j]=3;
+									writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
+								}
+							}
+							else {
+								if(scoreMap[i-1][j]>3||scoreMap[i-1][j]==0){
+									scoreMap[i-1][j]=3;
+									writer.append("(" + (i-1) + "," + (j) + ") row findEne5 "+ 3+"\n");	
+								}
+							}
+						}
+					
+					}
+					
+					if(blank==4) {
+						if(i-1>=0&&j<map.length&&(scoreMap[i-1][j]>3||scoreMap[i-1][j]==0)){
+							scoreMap[i-1][j]=3;
+							writer.append("(" + (i-1) + "," + (j) + ") row findEne5 "+ 3+"\n");	
+						}
+					}
+
+					if(blank==5) {
+						if(i-1>=0&&j<map.length&&(scoreMap[i-1][j]>3||scoreMap[i-1][j]==0)){
+							scoreMap[i-1][j]=3;
+							writer.append("(" + (i-1) + "," + (j) + ") row findEne5 "+ 3+"\n");	
 						}
 					}
 
@@ -294,11 +384,9 @@ public class Row {
 
 				}
 			}
-
-
 		}
-
 	}
+
 
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트

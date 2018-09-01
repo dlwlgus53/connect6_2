@@ -16,6 +16,7 @@ public class Compute {
 	Make4by4 make4by4;
 	AboutEnemy3 aboutEnemy3;
 	FileWriter writer;
+	FindTwoEnemy3 findTwoEnemy3;
 
 	Compute(int[][]map, int myColor) throws IOException{
 		this.map = map;
@@ -35,6 +36,7 @@ public class Compute {
 		diagonal2 = new Diagonal2(map, scoreMap, myColor, writer);
 		make4by4 = new Make4by4(map,scoreMap, myColor,writer);
 		aboutEnemy3 = new AboutEnemy3(map,scoreMap, myColor,writer);
+		findTwoEnemy3 = new FindTwoEnemy3(map,scoreMap,myColor,writer);
 		
 		
 		
@@ -48,6 +50,7 @@ public class Compute {
 		scoreMap = diagonal2.execute();
 		scoreMap = make4by4.execute();
 		scoreMap = aboutEnemy3.execute();
+		scoreMap = findTwoEnemy3.execute();
 		//그런다음 점수맵을 프린트해보고.
 		printMap(scoreMap);
 		//result에는 어디다 돌을 두어야 하는지가 나와.
