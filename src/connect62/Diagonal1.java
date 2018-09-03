@@ -11,7 +11,7 @@ public class Diagonal1 {
 	int enemyColor;
 	FileWriter writer; 
 	FindBetter findBetter;
-	
+
 	Diagonal1(int[][] map,double[][]scoreMap,int myColor, FileWriter writer){
 		this.map = map;
 		this.scoreMap = scoreMap;
@@ -210,7 +210,7 @@ public class Diagonal1 {
 								scoreMap[tempi][tempj]+=10;
 								writer.append("(" + tempi + "," + tempj + ") dia1 findene1 "+ 10 +"\n");
 							}
-							
+
 
 						}
 						break;
@@ -246,7 +246,7 @@ public class Diagonal1 {
 					case 6:
 						System.out.println("you lose...");
 						System.exit(0);
-				
+
 					}
 
 				}
@@ -258,7 +258,7 @@ public class Diagonal1 {
 
 	}
 
-	
+
 	void findEnemyFive() throws IOException {
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
@@ -284,24 +284,24 @@ public class Diagonal1 {
 				}
 
 				if(isMine==false&&count==5) {
-					
+
 
 					for(k=0;k<6;k++) {
 						if(unit[k]==0) {
 							blank=k;
 						}
 					}
-					
+
 					blankRow = i-blank;
 					blankCol = j+blank;
-					
-				
+
+
 					if(scoreMap[blankRow][blankCol]>3||scoreMap[blankRow][blankCol]==0) {
-						
+
 						scoreMap[blankRow][blankCol]=3;
 						writer.append("(" + blankRow + "," + blankCol + ") dia1 findEne5 "+ 3+"\n");							
 					}
-					
+
 
 					if(blank==0) {
 						if(i-6>=0&&j+6<map.length&&(scoreMap[i-6][j+6]>3||scoreMap[i-6][j+6]==0)){
@@ -311,17 +311,17 @@ public class Diagonal1 {
 					}
 
 					if(blank==1) {
-						
+
 						if(i-6>=0&&j+6<map.length&&(scoreMap[i-6][j+6]>3||scoreMap[i-6][j+6]==0)){
 							scoreMap[i-6][j+6]=3;
 							writer.append("(" + (i-6) + "," + (j+6) + ") dia1 findEne5 "+ 3+"\n");	
 						}
 					}
 
-					if(blank==2||blank==3) {
+					/*if(blank==2||blank==3) {
 						boolean case1 = false;
 						boolean case2= false;
-						
+
 						if(i-6>=0&&j+6<map.length){
 							case1=true;//왼쪽 위
 						}
@@ -360,9 +360,9 @@ public class Diagonal1 {
 								}
 							}
 						}
-					
-					}
-					
+
+					}*/
+
 					if(blank==4) {
 						if(i+1<map.length&&j-1>=0&&(scoreMap[i+1][j-1]>3||scoreMap[i+1][j-1]==0)){
 							scoreMap[i+1][j-1]=3;
@@ -385,9 +385,111 @@ public class Diagonal1 {
 	}
 
 
+	void findEnemyFour() throws IOException {
+		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
+		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
 
-	
-	
+		int[] unit = new int[6];
+
+		for(int i=0;i<map.length-6+1;i++) {
+			for(int j=0;j<map.length;j++) {
+				if(map[i][j]==enemyColor) {
+
+					unit=copyToUnit(unit,i,j);
+
+					int k=0;
+					int count=0;
+					int blankCount=0;
+					blankRow.clear();
+					blankCol.clear();
+
+					boolean isMine=false;
+
+					for(k=0;k<6;k++) {
+						if(unit[k]==myColor)
+							isMine = true;
+						if(unit[k]==enemyColor) {
+							count++;
+						}
+						if(k<4&&unit[k]==0) {
+							blankCount++;
+							blankRow.add(i-k);
+							blankCol.add(j+k);
+						}
+					}
+
+
+
+					if (isMine==false && count==4) {
+						if (blankCount==0) {
+							helpEnemy4(i,j);
+						}
+
+						if(blankCount==1) {
+							int score1=findBetter.execute(blankRow.get(0), blankRow.get(0));
+
+							if(score1>0&&(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.3||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.3;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") dia1 findene4 "+ 4.3 +"\n");
+							}
+
+							else if(score1==0) {
+								helpEnemy4(i,j);
+							}
+						}
+
+						if(blankCount==2) {
+							int score1=0;
+							int score2=0;
+							score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
+							score2=findBetter.execute(blankRow.get(1), blankCol.get(1));
+
+							if (score1==0&&score2==0) {
+								helpEnemy4(i,j);
+							}
+
+
+							else if(score1>=score2&&
+									(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.3||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.3;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") dia1 findene4 "+ 4.3 +"\n");
+
+							}
+
+							else if(score1<score2&&
+									(scoreMap[blankRow.get(1)][blankCol.get(1)]>4.3||scoreMap[blankRow.get(1)][blankCol.get(1)]==0)) {
+								scoreMap[blankRow.get(1)][blankCol.get(1)]=4.3;
+								writer.append("(" + blankRow.get(1) + "," + blankCol.get(1) + ") dia1 findene4 "+ 4.3 +"\n");
+							}
+
+
+						}
+
+
+
+
+					}
+				}
+			}
+		}
+
+
+		}
+
+		private void helpEnemy4(int i, int j) throws IOException {
+
+			if(i-4>=0&&j+4<map.length&&map[i-4][j+4]==0&&(scoreMap[i-4][j+4]>4.3||scoreMap[i-4][j+4]==0)) {
+				scoreMap[i-4][j+4]=4.3;
+				writer.append("(" + (i-4) + "," +j+4 + ") dia1 findene4 "+ 4.3 +"\n");
+			}
+			if(i+1<map.length&&j-1>=0&&map[i+1][j-1]==0&&(scoreMap[i+1][j-1]>4.3||scoreMap[i+1][j-1]==0)) {
+				scoreMap[i+1][j-1]=4.3;
+				writer.append("(" + (i+1) + "," + (j-1) + ") dia1 findene4 "+ 4.3 +"\n");
+			}
+
+		}
+
+		/*
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
@@ -424,10 +526,10 @@ public class Diagonal1 {
 							listCol.add(tempj-1);
 						}
 					}
-					
-				
+
+
 					while(index<listRow.size()) {
-					
+
 					if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
 							(scoreMap[listRow.get(index)][listCol.get(index)]==0||
 							scoreMap[listRow.get(index)][listCol.get(index)]>4.3)){
@@ -436,28 +538,28 @@ public class Diagonal1 {
 					}
 					index++;
 					}
-				
+
 
 				}
 			}
 		}
-		
+
 	}
+		 */
+		int[]copyToUnit(int[]unit, int row, int col){
 
-	int[]copyToUnit(int[]unit, int row, int col){
+			int k=0;
+			unit[k] = map[row][col];
+			unit[k+1]=map[row-1][col+1];
+			unit[k+2]=map[row-2][col+2];
+			unit[k+3]=map[row-3][col+3];
+			unit[k+4]=map[row-4][col+4];
+			unit[k+5]=map[row-5][col+5];
 
-		int k=0;
-		unit[k] = map[row][col];
-		unit[k+1]=map[row-1][col+1];
-		unit[k+2]=map[row-2][col+2];
-		unit[k+3]=map[row-3][col+3];
-		unit[k+4]=map[row-4][col+4];
-		unit[k+5]=map[row-5][col+5];
+			return unit;
+		}
 
-		return unit;
+
 	}
-
-
-}
 
 

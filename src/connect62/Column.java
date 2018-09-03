@@ -281,24 +281,24 @@ public class Column {
 				}
 
 				if(isMine==false&&count==5) {
-					
+
 
 					for(k=0;k<6;k++) {
 						if(unit[k]==0) {
 							blank=k;
 						}
 					}
-					
+
 					blankRow = i;
 					blankCol = j+blank;
-					
-				
+
+
 					if(scoreMap[blankRow][blankCol]>3||scoreMap[blankRow][blankCol]==0) {
-						
+
 						scoreMap[blankRow][blankCol]=3;
 						writer.append("(" + blankRow + "," + blankCol + ") col findEne5 "+ 3+"\n");							
 					}
-					
+
 
 					if(blank==0) {
 						if(i>=0&&j+6<map.length&&(scoreMap[i][j+6]>3||scoreMap[i][j+6]==0)){
@@ -308,17 +308,17 @@ public class Column {
 					}
 
 					if(blank==1) {
-						
+
 						if(i>=0&&j+6<map.length&&(scoreMap[i][j+6]>3||scoreMap[i][j+6]==0)){
 							scoreMap[i][j+6]=3;
 							writer.append("(" + (i) + "," + (j+6) + ") col findEne5 "+ 3+"\n");	
 						}
 					}
 
-					if(blank==2||blank==3) {
+					/*if(blank==2||blank==3) {
 						boolean case1 = false;
 						boolean case2= false;
-						
+
 						if(i>=0&&j+6<map.length){
 							case1=true;//왼쪽 위
 						}
@@ -357,9 +357,9 @@ public class Column {
 								}
 							}
 						}
-					
-					}
-					
+
+					}*/
+
 					if(blank==4) {
 						if(i<map.length&&j-1>=0&&(scoreMap[i][j-1]>3||scoreMap[i][j-1]==0)){
 							scoreMap[i][j-1]=3;
@@ -381,67 +381,93 @@ public class Column {
 		}
 	}
 
-	
-	void findEnemyFour() throws IOException {
-		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
-		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 
+	void findEnemyFour() throws IOException {
+		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
+		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
 		int[] unit = new int[6];
 		for(int i=0;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
+				if(map[i][j]==enemyColor) {
 
-				unit=copyToUnit(unit,i,j);
+					unit=copyToUnit(unit,i,j);
 
-				int k=0;
-				int count=0;
-				int index = 0;
-				listRow.clear();
-				listCol.clear();
-				
-				boolean isMine=false;
+					int k=0;
+					int count=0;
+					int blankCount=0;
 
+					blankRow.clear();
+					blankCol.clear();
 
-				for(k=0;k<6;k++) {
-					if(unit[k]==myColor)
-						isMine = true;
-					if(unit[k]==enemyColor)
-						count++;
-				}
+					boolean isMine=false;
 
 
-
-				if (isMine==false && count==4) {
-					int tempj = j;
-					for(tempj=j;tempj<j+6;tempj++) {
-						if(scoreMap[i][tempj]==-10000&&tempj>=1) {
-							listRow.add(i);//왼쪽..에만둘게..?
-							listCol.add(tempj-1);
+					for(k=0;k<6;k++) {
+						if(unit[k]==myColor)
+							isMine = true;
+						if(unit[k]==enemyColor) {
+							count++;
 						}
-						if(scoreMap[i][tempj]==-10000&&tempj<=map.length-1) {
-							listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
-							listCol.add(tempj+1);
+						if(unit[k]==blankCount) {
+							blankCount++;
+							blankRow.add(i);
+							blankCol.add(j+k);
 						}
 					}
 
-					while(index<listRow.size()) {
-					if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
-							(scoreMap[listRow.get(index)][listCol.get(index)]==0||
-							scoreMap[listRow.get(index)][listCol.get(index)]>4.1)){
-						scoreMap[listRow.get(index)][listCol.get(index)]=4.1;
-						writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") col findene4 "+ 4.1 +"\n");
-					}
-					index++;
+
+
+					if (isMine==false && count==4) {
+						if (blankCount==0) {
+							helpEnemy4(i,j); 
+						}
+
+						if(blankCount==1) {
+							int score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
+							if(score1>0&&(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.1||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.1;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") col findene4 "+ 4.1 +"\n");
+							}
+							else if(score1==0){
+								helpEnemy4(i,j); 
+							}
+						}
+
+						if(blankCount==2) {
+							int score1=0;
+							int score2=0;
+							score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
+							score2=findBetter.execute(blankRow.get(1), blankCol.get(1));
+
+							if(score1==0&&score2==0) {
+								helpEnemy4(i,j); 
+							}
+							else if(score1>=score2&&
+									(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.1||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.1;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") col findene4 "+ 4.1 +"\n");
+							}
+							else if(score1<score2&&
+									(scoreMap[blankRow.get(1)][blankCol.get(1)]>4.1||scoreMap[blankRow.get(1)][blankCol.get(1)]==0)) {
+								scoreMap[blankRow.get(1)][blankCol.get(1)]=4.1;
+								writer.append("(" + blankRow.get(1) + "," + blankCol.get(1) + ") col findene4 "+ 4.1 +"\n");
+							}
+						}
 					}
 				}
-
-
-
-
-
 			}
 		}
+	}
 
-
+	private void helpEnemy4(int i, int j) throws IOException {
+		if(j+4<map.length&&map[i][j+4]==0&&(scoreMap[i][j+4]>4.2||scoreMap[i][j+4]==0)) {
+			scoreMap[i][j+4]=4.1;
+			writer.append("(" + i + "," +j+4 + ") col findene4 "+ 4.1 +"\n");
+		}
+		if(j-1>=0&&map[i][j-1]==0&&(scoreMap[i][j-1]>4.2||scoreMap[i][j-1]==0)) {
+			scoreMap[i][j-1]=4.1;
+			writer.append("(" + (i) + "," + (j-1) + ") col findene4 "+ 4.1 +"\n");
+		}
 	}
 
 
@@ -462,7 +488,27 @@ public class Column {
 
 }
 
+/*int tempj = j;
+	for(tempj=j;tempj<j+6;tempj++) {
+		if(scoreMap[i][tempj]==-10000&&tempj>=1) {
+			listRow.add(i);//왼쪽..에만둘게..?
+			listCol.add(tempj-1);
+		}
+		if(scoreMap[i][tempj]==-10000&&tempj<=map.length-1) {
+			listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+			listCol.add(tempj+1);
+		}
+	}
 
+	while(index<listRow.size()) {
+		if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
+				(scoreMap[listRow.get(index)][listCol.get(index)]==0||
+				scoreMap[listRow.get(index)][listCol.get(index)]>4.1)){
+			scoreMap[listRow.get(index)][listCol.get(index)]=4.1;
+			writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") col findene4 "+ 4.1 +"\n");
+		}
+		index++;
+	}*/
 
 
 

@@ -261,7 +261,7 @@ public class Row {
 			}
 		}
 	}
-	
+
 	void findEnemyFive() throws IOException {
 		int[] unit = new int[6];
 		for(int i=0;i<map.length-6+1;i++) {
@@ -288,21 +288,21 @@ public class Row {
 				}
 
 				if(isMine==false&&count==5) {
-					
+
 
 					for(k=0;k<6;k++) {
 						if(unit[k]==0) {
 							blank=k;
 						}
 					}
-					
+
 					blankRow = i+blank;
 					blankCol = j;
-					
-				
-					
+
+
+
 					if(scoreMap[blankRow][blankCol]>3||scoreMap[blankRow][blankCol]==0) {
-						
+
 						scoreMap[blankRow][blankCol]=3;
 						writer.append("(" + blankRow + "," + blankCol + ") row findEne5 "+ 3+"\n");							
 					}
@@ -315,14 +315,14 @@ public class Row {
 					}
 
 					if(blank==1) {
-						
+
 						if(i+6<map.length&&(scoreMap[i+6][j]>3||scoreMap[i+6][j]==0)){
 							scoreMap[i+6][j]=3;
 							writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
 						}
 					}
 
-					if(blank==2||blank==3) {
+					/*if(blank==2||blank==3) {
 						boolean case1 = false;
 						boolean case2= false;
 						if(i+6<map.length){
@@ -363,9 +363,9 @@ public class Row {
 								}
 							}
 						}
-					
-					}
-					
+
+					}*/
+
 					if(blank==4) {
 						if(i-1>=0&&j<map.length&&(scoreMap[i-1][j]>3||scoreMap[i-1][j]==0)){
 							scoreMap[i-1][j]=3;
@@ -386,14 +386,119 @@ public class Row {
 			}
 		}
 	}
+	void findEnemyFour() throws IOException {
+
+		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
+		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
+		int[] unit = new int[6];
+
+		for(int i=0;i<map.length-6+1;i++) {
+			for(int j=0;j<map.length;j++) {
+				if(map[i][j]==enemyColor) {
+
+					unit=copyToUnit(unit,i,j);
+
+					int k=0;
+					int count=0;
+					int blankCount=0;
+
+					blankRow.clear();
+					blankCol.clear();
+
+					boolean isMine=false;
 
 
+					for(k=0;k<6;k++) {
+						if(unit[k]==myColor)
+							isMine = true;
+						if(unit[k]==enemyColor) {
+							count++;
+						}
+						if(unit[k]==blankCount) {
+							blankCount++;
+							blankRow.add(i+k);
+							blankCol.add(j);
+						}
+					}
+
+
+
+					if (isMine==false && count==4) {
+						if (blankCount==0) {
+							hlepEnemy4(i,j);
+						}
+
+						if(blankCount==1) {
+							int score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
+
+							if(score1>0&&(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.2||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.2;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") row findene4 "+ 4.2 +"\n");
+							}
+							else if(score1==0){
+								hlepEnemy4(i,j);
+							}
+						}
+
+						if(blankCount==2) {
+							int score1=0;
+							int score2=0;
+							score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
+							score2=findBetter.execute(blankRow.get(1), blankCol.get(1));
+
+							if(score1==0&&score2==0) {
+								hlepEnemy4(i,j);
+							}
+
+							else if(score1>=score2&&
+									(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.2||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.2;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") row findene4 "+ 4.2 +"\n");
+
+							}
+
+							else if(score1<score2&&
+									(scoreMap[blankRow.get(1)][blankCol.get(1)]>4.2||scoreMap[blankRow.get(1)][blankCol.get(1)]==0)) {
+								scoreMap[blankRow.get(1)][blankCol.get(1)]=4.2;
+								writer.append("(" + blankRow.get(1) + "," + blankCol.get(1) + ") row findene4 "+ 4.2 +"\n");
+							}
+
+
+						}
+
+
+
+
+					}
+				}
+			}
+		}
+
+
+	}
+
+	void hlepEnemy4(int i, int j) throws IOException {
+		if(i+4<map.length&&map[i+4][j]==0&&(scoreMap[i+4][j]>4.2||scoreMap[i+4][j]==0)) {
+			scoreMap[i+4][j]=4.2;
+			writer.append("(" + i+4 + "," +j + ") row findene4 "+ 4.2 +"\n");
+		}
+		if(i-1>=0&&map[i-1][j]==0&&(scoreMap[i-1][j]>4.2||scoreMap[i-1][j]==0)) {
+			scoreMap[i-1][j]=4.2;
+			writer.append("(" + (i-1) + "," + j + ") row findene4 "+ 4.2 +"\n");
+		}
+	}
+
+
+
+
+
+	/*
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 
 		int[] unit = new int[6];
-		
+
 		for(int i=0;i<map.length-6+1;i++) {
 			for(int j=0;j<map.length;j++) {
 
@@ -427,8 +532,8 @@ public class Row {
 						}
 					}
 
-					
-				
+
+
 					while(index<listRow.size()) {
 						if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
 								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
@@ -439,8 +544,8 @@ public class Row {
 						}
 						index++;
 					}
-					
-					
+
+
 					/*int tempi=i;
 					for(tempi=i;tempi<i+6;tempi++) {
 						if(scoreMap[tempi][j]!=-10000&&(scoreMap[tempi][j]==0||scoreMap[tempi][j]>4.2)) {
@@ -448,17 +553,18 @@ public class Row {
 							writer.append("(" + tempi + "," + j + ") row findmy4 "+ 4.2 +"\n");
 						}
 					}
-					*/
 
 
 
-				}
-			}
+
+}
+}
 
 
-		}
+}
 
-	}
+}
+	 */
 
 	int[]copyToUnit(int[]unit, int row, int col){
 

@@ -326,7 +326,7 @@ public class Diagonal2{
 						}
 					}
 
-					if(blank==2||blank==3) {
+					/*if(blank==2||blank==3) {
 						boolean case1 = false;
 						boolean case2= false;
 						if(i-6>=0&&j-6>=0){
@@ -368,7 +368,7 @@ public class Diagonal2{
 							}
 						}
 					
-					}
+					}*/
 					
 					if(blank==4) {
 						if(i+1<map.length&&j+1<map.length&&(scoreMap[i+1][j+1]>3||scoreMap[i+1][j+1]==0)){
@@ -390,17 +390,121 @@ public class Diagonal2{
 			}
 		}
 	}
-
-
-
-
-
-
-
-
-
-
 	void findEnemyFour() throws IOException {
+
+		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
+		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
+		int[] unit = new int[6];
+
+		for(int i=5;i<map.length;i++) {
+			for(int j=5;j<map.length;j++) {
+				if(map[i][j]==enemyColor) {
+
+					unit=copyToUnit(unit,i,j);
+
+					int k=0;
+					int count=0;
+					int blankCount=0;
+
+					blankRow.clear();
+					blankCol.clear();
+
+					boolean isMine=false;
+
+
+					for(k=0;k<6;k++) {
+						if(unit[k]==myColor)
+							isMine = true;
+						if(unit[k]==enemyColor) {
+							count++;
+						}
+						if(unit[k]==blankCount) {
+							blankCount++;
+							blankRow.add(i-k);
+							blankCol.add(j-k);
+						}
+					}
+
+
+
+					if (isMine==false && count==4) {
+						if (blankCount==0) {
+							hlepEnemy4(i,j);
+						}
+
+						if(blankCount==1) {
+							int score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
+
+							if(score1>0&&(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.4||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.4;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") dia2 findene4 "+ 4.4 +"\n");
+							}
+							else if(score1==0){
+								hlepEnemy4(i,j);
+							}
+						}
+
+						if(blankCount==2) {
+							int score1=0;
+							int score2=0;
+							score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
+							score2=findBetter.execute(blankRow.get(1), blankCol.get(1));
+
+							if(score1==0&&score2==0) {
+								hlepEnemy4(i,j);
+							}
+
+							else if(score1>=score2&&
+									(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.4||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
+								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.4;
+								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") dia2 findene4 "+ 4.4 +"\n");
+
+							}
+
+							else if(score1<score2&&
+									(scoreMap[blankRow.get(1)][blankCol.get(1)]>4.4||scoreMap[blankRow.get(1)][blankCol.get(1)]==0)) {
+								scoreMap[blankRow.get(1)][blankCol.get(1)]=4.4;
+								writer.append("(" + blankRow.get(1) + "," + blankCol.get(1) + ") dia2 findene4 "+ 4.4 +"\n");
+							}
+
+
+						}
+
+
+
+
+					}
+				}
+			}
+		}
+
+
+	}
+
+	void hlepEnemy4(int i, int j) throws IOException {
+		if(i+4<map.length&&map[i+4][j]==0&&(scoreMap[i+4][j]>4.4||scoreMap[i+4][j]==0)) {
+			scoreMap[i+4][j]=4.4;
+			writer.append("(" + i+4 + "," +j + ") dia2 findene4 "+ 4.4 +"\n");
+		}
+		if(i-1>=0&&map[i-1][j]==0&&(scoreMap[i-1][j]>4.4||scoreMap[i-1][j]==0)) {
+			scoreMap[i-1][j]=4.4;
+			writer.append("(" + (i-1) + "," + j + ") dia2 findene4 "+ 4.4 +"\n");
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 		int[] unit = new int[6];
@@ -456,7 +560,7 @@ public class Diagonal2{
 							scoreMap[tempi][tempj]=4.4;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
 							writer.append("(" + tempi + "," + tempj + ") dia2 findene5 "+ 4.4 +"\n");
 						}
-					}*/
+					}
 
 
 				}
@@ -466,7 +570,7 @@ public class Diagonal2{
 
 
 	}
-
+*/
 
 
 
