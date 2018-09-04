@@ -111,10 +111,16 @@ public class Compute {
 
 		for(i=0;i<map.length;i++) {
 			for(j=0;j<map.length;j++) {
-				if(scoreMap[i][j]>0&&scoreMap[i][j]<9) {
+				
+				if(scoreMap[i][j]>0&&scoreMap[i][j]%10<9) {
 					isMust=true;
-					if(scoreMap[i][j]<check) {
+					if(scoreMap[i][j]%10<check%10) {
 						check = scoreMap[i][j]; result[0]=i; result[1]=j;
+					}
+					if(scoreMap[i][j]%10==check%10) {
+						if(scoreMap[i][j]>check%10) {
+							check = scoreMap[i][j]; result[0]=i; result[1]=j;
+						}
 					}
 				}
 			}

@@ -384,7 +384,7 @@ public class Diagonal1 {
 		}
 	}
 
-
+/*
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
 		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
@@ -412,7 +412,7 @@ public class Diagonal1 {
 							count++;
 						}
 						if(k<4&&unit[k]==0) {
-							blankCount++;
+							if(blankCount<2)	blankCount++;
 							blankRow.add(i-k);
 							blankCol.add(j+k);
 						}
@@ -421,11 +421,13 @@ public class Diagonal1 {
 
 
 					if (isMine==false && count==4) {
+						System.out.println("case 0");
 						if (blankCount==0) {
 							helpEnemy4(i,j);
 						}
 
 						if(blankCount==1) {
+							System.out.println("case1");
 							int score1=findBetter.execute(blankRow.get(0), blankRow.get(0));
 
 							if(score1>0&&(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.3||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
@@ -439,6 +441,7 @@ public class Diagonal1 {
 						}
 
 						if(blankCount==2) {
+							System.out.println("case2");
 							int score1=0;
 							int score2=0;
 							score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
@@ -487,9 +490,9 @@ public class Diagonal1 {
 				writer.append("(" + (i+1) + "," + (j-1) + ") dia1 findene4 "+ 4.3 +"\n");
 			}
 
-		}
+		}*/
 
-		/*
+		
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
@@ -545,7 +548,7 @@ public class Diagonal1 {
 		}
 
 	}
-		 */
+		 
 		int[]copyToUnit(int[]unit, int row, int col){
 
 			int k=0;

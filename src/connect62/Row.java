@@ -386,7 +386,7 @@ public class Row {
 			}
 		}
 	}
-	void findEnemyFour() throws IOException {
+	/*void findEnemyFour() throws IOException {
 
 		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
 		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
@@ -414,8 +414,8 @@ public class Row {
 						if(unit[k]==enemyColor) {
 							count++;
 						}
-						if(unit[k]==blankCount) {
-							blankCount++;
+						if(unit[k]==0) {
+							if(blankCount<2)	blankCount++;
 							blankRow.add(i+k);
 							blankCol.add(j);
 						}
@@ -487,12 +487,12 @@ public class Row {
 			writer.append("(" + (i-1) + "," + j + ") row findene4 "+ 4.2 +"\n");
 		}
 	}
+	 */
 
 
 
 
 
-	/*
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
@@ -539,32 +539,18 @@ public class Row {
 								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
 								scoreMap[listRow.get(index)][listCol.get(index)]>4.2)){
 							scoreMap[listRow.get(index)][listCol.get(index)]=4.2;
-							System.out.println("여기야?");
 							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") row findene4 "+ 4.2 +"\n");
 						}
 						index++;
 					}
+				}
+			}
 
 
-					/*int tempi=i;
-					for(tempi=i;tempi<i+6;tempi++) {
-						if(scoreMap[tempi][j]!=-10000&&(scoreMap[tempi][j]==0||scoreMap[tempi][j]>4.2)) {
-							scoreMap[tempi][j]+=4.2;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
-							writer.append("(" + tempi + "," + j + ") row findmy4 "+ 4.2 +"\n");
-						}
-					}
+		}
 
+	}
 
-
-
-}
-}
-
-
-}
-
-}
-	 */
 
 	int[]copyToUnit(int[]unit, int row, int col){
 
