@@ -58,14 +58,11 @@ public class Column {
 					int tempj=j;
 
 					for(tempj=j;tempj<j+6;tempj++) {
-						if(scoreMap[i][tempj]!=-10000&&(scoreMap[i][tempj]==0||scoreMap[i][tempj]>1)) {
-							scoreMap[i][tempj]=1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+						if(checkMust(i, tempj, 1)) {
+							scoreMap[i][tempj]=scoreMust(scoreMap[i][tempj], 1);
 							writer.append("(" + i + "," + tempj + ") colfindmy5 " + 1 +"\n");
 						}
 					}
-
-
-
 				}
 			}
 
@@ -97,8 +94,8 @@ public class Column {
 					int tempj=j;
 
 					for(tempj=j;tempj<j+6;tempj++) {
-						if(scoreMap[i][tempj]!=-10000&&(scoreMap[i][tempj]==0||scoreMap[i][tempj]>2.1)) {
-							scoreMap[i][tempj]=2.1;//이거는 2.1
+						if(checkMust(i, tempj, 2.1)) {
+							scoreMap[i][tempj]=scoreMust(scoreMap[i][tempj],2.1);//이거는 2.1
 							writer.append("(" + i + "," + tempj + ") col findmy4 "+ 2.1 +"\n");
 						}
 					}
@@ -139,7 +136,7 @@ public class Column {
 					switch(count){
 					case 1 : 
 						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0) {
+							if(check(i,tempj)) {
 								scoreMap[i][tempj]+=20;//내 돌 근처에 20점 드립니다~
 								writer.append("(" + i + "," + tempj + ") col findmy1 "+ 20 +"\n");
 							}
@@ -148,7 +145,7 @@ public class Column {
 						break;
 					case 2 : 
 						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0) {
+							if(check(i,tempj)) {
 								scoreMap[i][tempj]+=20;//6개 안에 2개 있을때 내 돌 근처에 20점 드립니다~
 								writer.append("(" + i + "," + tempj + ") col findmy2 "+ 20 +"\n");
 							}
@@ -157,7 +154,7 @@ public class Column {
 
 					case 3 : 
 						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0) {
+							if(check(i,tempj)) {
 								scoreMap[i][tempj]+=100;//6칸에 3개만있고 상대방 돌 없으면 100점줍니다.
 								writer.append("(" + i + "," + tempj + ") col findmy3 "+ 100 +"\n");
 							}
@@ -205,7 +202,7 @@ public class Column {
 					switch(count) {
 					case 1:
 						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0) {
+							if(check(i,tempj)) {
 								scoreMap[i][tempj]+=10;
 								writer.append("(" + i + "," + tempj + ") col findene1 "+ 10 +"\n");
 							}
@@ -213,7 +210,7 @@ public class Column {
 						break;
 					case 2:
 						for(tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[i][tempj]!=-10000&&scoreMap[i][tempj]%10==0) {
+							if(check(i,tempj)) {
 								scoreMap[i][tempj]+=10;
 								writer.append("(" + i + "," + tempj + ") col findene2 "+ 10 +"\n");
 							}
@@ -232,10 +229,9 @@ public class Column {
 							}
 						}
 						while(index<listRow.size()) {
-							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
-									scoreMap[listRow.get(index)][listCol.get(index)]%10==0)
+							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000)
 							{scoreMap[listRow.get(index)][listCol.get(index)]+=20;
-							writer.append("(" + i + "," + listCol.get(index) + ") col findene3 "+ 20 +"\n");
+							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") col findene3 "+ 20 +"\n");
 							}
 
 							index++;
@@ -265,8 +261,6 @@ public class Column {
 
 				int k=0;
 				int count=0;
-				int tempj=j;
-				int tempi=i;
 				int blank=0;
 				int blankRow=0;
 				int blankCol=0;
@@ -293,16 +287,15 @@ public class Column {
 					blankCol = j+blank;
 
 
-					if(scoreMap[blankRow][blankCol]>3||scoreMap[blankRow][blankCol]==0) {
-
-						scoreMap[blankRow][blankCol]=3;
+					if(checkMust(blankRow,blankCol,3)) {
+						scoreMap[blankRow][blankCol]=scoreMust(scoreMap[blankRow][blankCol],3);
 						writer.append("(" + blankRow + "," + blankCol + ") col findEne5 "+ 3+"\n");							
 					}
 
 
 					if(blank==0) {
 						if(i>=0&&j+6<map.length&&(scoreMap[i][j+6]>3||scoreMap[i][j+6]==0)){
-							scoreMap[i][j+6]=3;
+							scoreMap[i][j+6]=scoreMust(scoreMap[i][j+6],3);
 							writer.append("(" + (i) + "," + (j+6) + ") col findEne5 "+ 3+"\n");	
 						}
 					}
@@ -310,7 +303,7 @@ public class Column {
 					if(blank==1) {
 
 						if(i>=0&&j+6<map.length&&(scoreMap[i][j+6]>3||scoreMap[i][j+6]==0)){
-							scoreMap[i][j+6]=3;
+							scoreMap[i][j+6]=scoreMust(scoreMap[i][j+6],3);
 							writer.append("(" + (i) + "," + (j+6) + ") col findEne5 "+ 3+"\n");	
 						}
 					}
@@ -362,14 +355,14 @@ public class Column {
 
 					if(blank==4) {
 						if(i<map.length&&j-1>=0&&(scoreMap[i][j-1]>3||scoreMap[i][j-1]==0)){
-							scoreMap[i][j-1]=3;
+							scoreMap[i][j-1]=scoreMust(scoreMap[i][j-1],3);
 							writer.append("(" + (i) + "," + (j-1) + ") col findEne5 "+ 3+"\n");	
 						}
 					}
 
 					if(blank==5) {
 						if(i<map.length&&j-1>=0&&(scoreMap[i][j-1]>3||scoreMap[i][j-1]==0)){
-							scoreMap[i][j-1]=3;
+							scoreMap[i][j-1]=scoreMust(scoreMap[i][j-1],3);
 							writer.append("(" + (i) + "," + (j-1) + ") col findEne5 "+ 3+"\n");	
 						}
 					}
@@ -380,7 +373,7 @@ public class Column {
 			}
 		}
 	}
-	
+
 	void findEnemyFour() throws IOException{
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
@@ -422,16 +415,15 @@ public class Column {
 
 
 					while(index<listRow.size()) {
-						if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
-								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
-								scoreMap[listRow.get(index)][listCol.get(index)]>4.1)){
-							scoreMap[listRow.get(index)][listCol.get(index)]=4.1;
+						if(checkMust(listRow.get(index),listCol.get(index),4.1)){
+							scoreMap[listRow.get(index)][listCol.get(index)]
+									=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],4.1);
 							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") col findene4 "+ 4.1 +"\n");
 						}
 						index++;
 					}
 
-				
+
 
 
 
@@ -447,10 +439,10 @@ public class Column {
 
 
 
-		
+
 	}
 
-/*
+	/*
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
 		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
@@ -538,7 +530,7 @@ public class Column {
 			writer.append("(" + (i) + "," + (j-1) + ") col findene4 "+ 4.1 +"\n");
 		}
 	}
-*/
+	 */
 
 
 
@@ -553,6 +545,27 @@ public class Column {
 		unit[k+5]=map[row][col+5];
 
 		return unit;
+	}
+
+	double scoreMust(double base, double d) {
+		double a = (int)(base/10)*10 +d;//modify
+		return a;
+	}
+
+	boolean checkMust(int i, int j, double score) {
+		boolean result = false;
+		if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
+			result = true;
+		}
+
+		return result;
+	}
+
+	boolean check(int i, int j) {
+		boolean result = true;
+		if(map[i][j]!=0)
+			result = false;
+		return result;
 	}
 
 }

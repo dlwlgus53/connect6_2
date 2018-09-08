@@ -2,7 +2,7 @@ package connect62;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 public class AboutEnemy3 {
 
@@ -48,7 +48,7 @@ public class AboutEnemy3 {
 					dia2Unit=copyToDia2Unit(dia2Unit,i,j);//dia2¹æÇâÀ¸·Î ¹Ş¾Æ¿ë
 					//ºñ¾îÀÖ´Â Ä­ Áß½ÉÀ¸·Î À¯´ÖÀ» ¶¼¾î³¿
 
-					int k=0;
+				
 
 					int colCount=0;
 					int rowCount=0;
@@ -72,8 +72,7 @@ public class AboutEnemy3 {
 					dia2Count=countUnit(dia2Unit);
 					//À¯´Ö¿¡ »ó´ë ¹æ µ¹ °¹¼ö Ã¼Å©
 
-					int tempi=i;
-					int tempj=j;
+					
 					int target3Number=0;
 					int target2Number=0;
 
@@ -115,7 +114,7 @@ public class AboutEnemy3 {
 
 					if((target3Number>=1&&target2Number>=1)||(target3Number>=2)) {
 						if(scoreMap[i][j]>6) {
-							scoreMap[i][j]=6;
+							scoreMap[i][j]+=6;
 							writer.append("(" + i + "," +j + ") enemyAbout overlap3 "+ 6 +"\n");
 							//	System.out.println("i : j " + i + " " + j + "target3Number : " + target3Number);
 						}
@@ -202,7 +201,26 @@ public class AboutEnemy3 {
 	}
 
 
+	double scoreMust(double base, double d) {
+		double a = (int)(base/10)*10 +d;//modify
+		return a;
+	}
 
+	boolean checkMust(int i, int j, double score) {
+		boolean result = false;
+		if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
+			result = true;
+		}
+
+		return result;
+	}
+
+	boolean check(int i, int j) {
+		boolean result = true;
+		if(map[i][j]!=0)
+			result = false;
+		return result;
+	}
 
 
 

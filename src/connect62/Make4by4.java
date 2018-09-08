@@ -87,7 +87,7 @@ public class Make4by4 {
 					
 					if(target[0]==true) {//column
 						for(tempi=i,tempj=j;tempj<j+6;tempj++) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+							if(check(tempi,tempj)) {
 								scoreMap[tempi][tempj]+=100;//
 								writer.append("(" + tempi + "," + tempj + ") col4by4 " + 100 +"\n");
 							}
@@ -95,7 +95,7 @@ public class Make4by4 {
 					}
 					if(target[1]==true) {//row
 						for(tempj=j,tempi=i;tempi<i+6;tempi++) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+							if(check(tempi,tempj)) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 								writer.append("(" + tempi + "," + tempj + ") row4by4 " + 100 +"\n");
 							}
@@ -104,7 +104,7 @@ public class Make4by4 {
 					}
 					if(target[2]==true) {//dia1
 						for(tempj=j,tempi=i ;tempj<j+6;tempi--,tempj++) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+							if(check(tempi,tempj)) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 								writer.append("(" + tempi + "," + tempj + ") dia14by4 " + 100 +"\n");
 							}
@@ -113,18 +113,16 @@ public class Make4by4 {
 					}
 					if(target[3]==true) {//dai2
 						for(tempj=j,tempi=i;tempj<j+6;tempj++,tempi--) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+							if(check(tempi,tempj)) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 20점 드립니다~
 								writer.append("(" + tempi + "," + tempj + ") dia24by4 " + 100 +"\n");
 							}
-							
+			
 						}
-
 					}
 				}
 			}
 		}
-
 	}
 
 
@@ -199,6 +197,27 @@ public class Make4by4 {
 			if(unit[k]==enemyColor)	count++;
 		}
 		return count;
+	}
+	
+	double scoreMust(double base, double d) {
+		double a = (int)(base/10)*10 +d;//modify
+		return a;
+	}
+
+	boolean checkMust(int i, int j, double score) {
+		boolean result = false;
+		if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
+			result = true;
+		}
+
+		return result;
+	}
+
+	boolean check(int i, int j) {
+		boolean result = true;
+		if(map[i][j]!=0)
+			result = false;
+		return result;
 	}
 
 

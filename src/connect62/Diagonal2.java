@@ -55,8 +55,8 @@ public class Diagonal2{
 
 				if(isEnemy==false&&count==5) {
 					for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-						if(scoreMap[tempi][tempj]!=-10000&&(scoreMap[tempi][tempj]==0||scoreMap[tempi][tempj]>1)) {
-							scoreMap[tempi][tempj]=1;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+						if(checkMust(tempi, tempj, 1)) {
+							scoreMap[tempi][tempj]=scoreMust(scoreMap[tempi][tempj],1);//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
 							writer.append("(" + tempi + "," + tempj + ") dia2 findmy5 "+ 1 +"\n");
 						}
 					}
@@ -91,8 +91,8 @@ public class Diagonal2{
 
 				if(isEnemy==false&&count==4) {
 					for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-						if(scoreMap[tempi][tempj]!=-10000&&(scoreMap[tempi][tempj]==0||scoreMap[tempi][tempj]>2.4)){
-							scoreMap[tempi][tempj]=2.4;//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
+						if(checkMust(tempi,tempj, 2.4)){
+							scoreMap[tempi][tempj]=scoreMust(scoreMap[tempi][tempj],2.4);//6칸안에 우리돌 5개 상대방 돌 없으면 400점 줍니다.
 							writer.append("(" + tempi + "," + tempj + ") dia2 findmy4 "+ 2.4 +"\n");
 						}
 					}
@@ -133,7 +133,7 @@ public class Diagonal2{
 					case 1 : 
 						for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
 
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+							if(check(tempi,tempj)) {
 								scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
 								writer.append("(" + tempi + "," + tempj + ") dia2 findmy1 "+ 20 +"\n");
 							}
@@ -141,16 +141,16 @@ public class Diagonal2{
 						break;
 					case 2 : 
 						for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0){
+							if(check(tempi,tempj)){
 								scoreMap[tempi][tempj]+=20;//내 돌 근처에 20점 드립니다~
-								writer.append("(" + tempi + "," + tempj + ") dia2 findmy2 "+ 40 +"\n");
+								writer.append("(" + tempi + "," + tempj + ") dia2 findmy2 "+ 20 +"\n");
 							}
 						}
 						break;
 
 					case 3 : 
 						for(tempj=j,tempi=i;tempi>i-6&&tempj>j-6 ;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+							if(check(tempi,tempj)) {
 								scoreMap[tempi][tempj]+=100;//내 돌 근처에 100점 드립니다~
 								writer.append("(" + tempi + "," + tempj + ") dia2 findmy3 "+ 100 +"\n");
 							}
@@ -206,7 +206,7 @@ public class Diagonal2{
 					switch(count) {
 					case 1:
 						for(tempj=j,tempi=i;tempi>i-6;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0) {
+							if(check(tempi,tempj)) {
 								scoreMap[tempi][tempj]+=10;
 								writer.append("(" + tempi + "," + tempj + ") dia2 findene1 "+ 10 +"\n");
 							}
@@ -215,7 +215,7 @@ public class Diagonal2{
 						break;
 					case 2:
 						for(tempj=j,tempi=i;tempi>i-6;tempi--,tempj--) {
-							if(scoreMap[tempi][tempj]!=-10000&&scoreMap[tempi][tempj]%10==0){
+							if(check(tempi,tempj)){
 								scoreMap[tempi][tempj]+=10;
 								writer.append("(" + tempi + "," + tempj + ") dia2 findene2 "+ 10 +"\n");
 							}
@@ -235,8 +235,7 @@ public class Diagonal2{
 						}
 
 						while(index<listRow.size()) {
-							if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
-									scoreMap[listRow.get(index)][listCol.get(index)]%10==0) {
+							if(check(listRow.get(index), listCol.get(index))) {
 								scoreMap[listRow.get(index)][listCol.get(index)]+=20;
 								writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 findene3 "+ 20 +"\n");
 							}
@@ -305,23 +304,22 @@ public class Diagonal2{
 
 					 */
 
-					if(scoreMap[blankRow][blankCol]>3||scoreMap[blankRow][blankCol]==0) {
-
-						scoreMap[blankRow][blankCol]=3;
+					if(checkMust(blankRow, blankCol, 3)) {
+						scoreMap[blankRow][blankCol]=scoreMust(scoreMap[blankRow][blankCol],3);
 						writer.append("(" + blankRow + "," + blankCol + ") dia2 findEne5 "+ 3+"\n");							
 					}
 
 					if(blank==0) {
-						if(i-6>=0&&j-6>=0&&(scoreMap[i-6][j-6]>3||scoreMap[i-6][j-6]==0)){
-							scoreMap[i-6][j-6]=3;
+						if(i-6>=0&&j-6>=0&&(checkMust(i-6, j-6, 3))){
+							scoreMap[i-6][j-6]=scoreMust(scoreMap[i-6][j-6],3);
 							writer.append("(" + (i-6) + "," + (j-6) + ") dia2 findEne5 "+ 3+"\n");	
 						}
 					}
 
 					if(blank==1) {
 
-						if(i-6>=0&&j-6>=0&&(scoreMap[i-6][j-6]>3||scoreMap[i-6][j-6]==0)){
-							scoreMap[i-6][j-6]=3;
+						if(i-6>=0&&j-6>=0&&(checkMust(i-6, j-6, 3))){
+							scoreMap[i-6][j-6]=scoreMust(scoreMap[i-6][j-6],3);
 							writer.append("(" + (i-6) + "," + (j-6) + ") dia2 findEne5 "+ 3+"\n");	
 						}
 					}
@@ -371,15 +369,15 @@ public class Diagonal2{
 					}*/
 
 					if(blank==4) {
-						if(i+1<map.length&&j+1<map.length&&(scoreMap[i+1][j+1]>3||scoreMap[i+1][j+1]==0)){
-							scoreMap[i+1][j+1]=3;
+						if(i+1<map.length&&j+1<map.length&&checkMust(i+1, j+1, 3)){
+							scoreMap[i+1][j+1]=scoreMust(scoreMap[i+1][j+1],3);
 							writer.append("(" + (i+1) + "," + (j+1) + ") dia2 findEne5 "+ 3+"\n");	
 						}
 					}
 
 					if(blank==5) {
-						if(i+1<map.length&&j+1<map.length&&(scoreMap[i+1][j+1]>3||scoreMap[i+1][j+1]==0)){
-							scoreMap[i+1][j+1]=3;
+						if(i+1<map.length&&j+1<map.length&&(checkMust(i+1, j+1, 3))){
+							scoreMap[i+1][j+1]=scoreMust(scoreMap[i+1][j+1],3);
 							writer.append("(" + (i+1) + "," + (j+1) + ") dia2 findEne5 "+ 3+"\n");	
 						}
 					}
@@ -577,11 +575,10 @@ public class Diagonal2{
 
 					while(index<listRow.size()) {
 
-						if(scoreMap[listRow.get(index)][listCol.get(index)]!=-10000&&
-								(scoreMap[listRow.get(index)][listCol.get(index)]==0||
-								scoreMap[listRow.get(index)][listCol.get(index)]>4.4)){
-							scoreMap[listRow.get(index)][listCol.get(index)]=4.4;
-							writer.append("(" + tempi + "," + tempj + ") dia2 findene4 "+ 4.4 +"\n");
+						if(checkMust(listRow.get(index), listCol.get(index), 4.4)){
+							scoreMap[listRow.get(index)][listCol.get(index)]
+									=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],4.4);
+							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 findene4 "+ 4.4 +"\n");
 						}
 
 						index++;
@@ -605,6 +602,27 @@ public class Diagonal2{
 	 
 
 
+		
+		double scoreMust(double base, double d) {
+			double a = (int)(base/10)*10 +d;//modify
+			return a;
+		}
+
+		boolean checkMust(int i, int j, double score) {
+			boolean result = false;
+			if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
+				result = true;
+			}
+
+			return result;
+		}
+
+		boolean check(int i, int j) {
+			boolean result = true;
+			if(map[i][j]!=0)
+				result = false;
+			return result;
+		}
 
 
 	int[]copyToUnit(int[]unit, int row, int col){

@@ -67,23 +67,23 @@ public class FindTwoEnemy3 {
 			
 				
 			if(score1>score2) {
-				if(scoreMap[result1[0][0]][result1[0][1]]>5) {
-					scoreMap[result1[0][0]][result1[0][1]]=5;
+				if(checkMust(result1[0][0], result1[0][1],5)) {
+					scoreMap[result1[0][0]][result1[0][1]]=scoreMust(scoreMap[result1[0][0]][result1[0][1]],5);
 					writer.append("(" + result1[0][0] + "," + result1[0][1] + ") findtwoenemy "+ 5 +"\n");
 				}
-				if(scoreMap[result1[1][0]][result1[1][1]]>5) {
-					scoreMap[result1[1][0]][result1[1][1]]=5;
+				if(checkMust(result1[1][0], result1[1][1],5)) {
+					scoreMap[result1[1][0]][result1[1][1]]=scoreMust(scoreMap[result1[0][0]][result1[0][1]],5);
 					writer.append("(" + result1[1][0] + "," + result1[1][1] + ") findtwoenemy "+ 5 +"\n");
 				}
 			}
 			
 			if(score2>score1) {
-				if(scoreMap[result2[0][0]][result2[0][1]]>5) {
-					scoreMap[result2[0][0]][result2[0][1]]=5;
+				if(checkMust(result2[0][0], result2[0][1],5)) {
+					scoreMap[result2[0][0]][result2[0][1]]=scoreMust(scoreMap[result2[0][0]][result2[0][1]],5);
 					writer.append("(" + result2[0][0] + "," + result2[0][1] + ") findtwoenemy "+ 5 +"\n");
 				}
-				if(scoreMap[result2[1][0]][result2[1][1]]>5) {
-					scoreMap[result2[1][0]][result2[1][1]]=5;
+				if(checkMust(result2[1][0], result2[1][1],5)) {
+					scoreMap[result2[1][0]][result2[1][1]]=scoreMust(scoreMap[result2[1][0]][result2[1][1]],5);
 					writer.append("(" + result2[1][0] + "," + result2[1][1] + ") findtwoenemy "+ 5 +"\n");
 				}
 			}
@@ -551,6 +551,29 @@ public class FindTwoEnemy3 {
 		return result;
 
 	}
+	
+	double scoreMust(double base, double d) {
+		double a = (int)(base/10)*10 +d;//modify
+		return a;
+	}
+
+	boolean checkMust(int i, int j, double score) {
+		boolean result = false;
+		if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
+			result = true;
+		}
+
+		return result;
+	}
+
+	boolean check(int i, int j) {
+		boolean result = true;
+		if(map[i][j]!=0)
+			result = false;
+		return result;
+	}
+
+
 
 
 
