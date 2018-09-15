@@ -67,6 +67,8 @@ public class Compute {
 
 	}
 
+
+
 	//1번부터 만들게
 
 	void printMap(double[][] scoreMap2) throws IOException {

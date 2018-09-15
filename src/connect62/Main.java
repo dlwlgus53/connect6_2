@@ -3,40 +3,22 @@ import java.io.IOException;
 import java.util.Scanner;
 public class Main {
 	static Scanner scan = new Scanner(System.in);
-	
+	static int myColor;
 	public static void main(String[] args) throws IOException {
-		//처음부터 할게
-		//맵을 만들자
 		System.out.println("맵 크기를 알려주세요");
 		int mapSize = scan.nextInt();
-		//맵을 만들자 나는 맵을 배열로 만들었어.
 		int[][] map = new int[mapSize][mapSize];
-		//그리고 맵 안에 전부 0을 넣어줄거야. 함수를 이용해서!
-		makeClean(map);
-		
-		//그다음 내가 검은돌인지 흰돌인지를 입력받아야해.
+		makeClean(map);	
 		System.out.println("컴퓨터가  검은돌이면 -1  흰돌이면 1");
-		int myColor = scan.nextInt();
-		
-		//검은돌이면 맵 중앙에 표시해야하자나?? 그래서 사이즈를 절반으로 나눈값에다가 -1 표시를 할게
+		myColor = scan.nextInt();
 		if(myColor == -1)	map[map.length/2][map[0].length/2] = -1;
-		//게임이 스타또!
-		//반복문스따또
 		Compute compute = new Compute(map,myColor);
+
+		
 		while(true) {
-		//상대방부터 시작해 언제나:) (x1,y1)이랑 (x2,y2)를 입력 받아야하지 함수로 할게
 		enemyInput(map,myColor);
-		//여기서 나는 계산기를 사용하는거지.
-		//print(Compute.result);
-		printMap(map);
 		compute.execute();
 		}
-		
-		
-		
-		
-		
-
 	}
 	
 	static void makeClean(int[][]map) {

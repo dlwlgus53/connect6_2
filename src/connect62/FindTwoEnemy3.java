@@ -5,27 +5,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class FindTwoEnemy3 {
-	
-	
-
+public class FindTwoEnemy3  {
 	double[][]scoreMap;
 	int[][]map;
 	int myColor;
 	int enemyColor;
 	FileWriter writer; 
-	ArrayList<Integer> targetRow = new ArrayList<Integer>(0);//타겟을 담을 리스트(row)
-	ArrayList<Integer> targetCol = new ArrayList<Integer>(0);//타겟을 담을 리스트(col)
-	ArrayList<Integer> targetWay = new ArrayList<Integer>(0);//방향을 담을 예정 1.col 2.row.3.dia1 4. dia2
-	int score1;
-	int score2;
-	
-	
+	int targetRow;
+	int targetCol;
+	int targetWay;
 
 
 
 
-	FindTwoEnemy3(int[][] map,double[][]scoreMap,int myColor,FileWriter writer){
+
+
+	FindTwoEnemy3(int[][] map,double[][]scoreMap,int myColor,FileWriter writer) throws IOException{
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;
@@ -39,8 +34,9 @@ public class FindTwoEnemy3 {
 	}
 
 	void find() throws IOException{
-		targetRow.clear();
-		targetCol.clear();
+		targetRow=0;
+		targetCol=0;
+		targetWay=0;
 
 		boolean isColTarget = false;
 		boolean isRowTarget = false;
@@ -60,259 +56,36 @@ public class FindTwoEnemy3 {
 		if(isDia2Target==true)	targetCount++;
 
 		if(targetCount>=2) {
-			int[][] result1 = new int[2][2];
-			int[][] result2 = new int[2][2];
-			result1 = findResult(0);
-			result2 = findResult(1);
-			
-				
-			if(score1>score2) {
-				if(checkMust(result1[0][0], result1[0][1],5)) {
-					scoreMap[result1[0][0]][result1[0][1]]=scoreMust(scoreMap[result1[0][0]][result1[0][1]],5);
-					writer.append("(" + result1[0][0] + "," + result1[0][1] + ") findtwoenemy "+ 5 +"\n");
-				}
-				if(checkMust(result1[1][0], result1[1][1],5)) {
-					scoreMap[result1[1][0]][result1[1][1]]=scoreMust(scoreMap[result1[0][0]][result1[0][1]],5);
-					writer.append("(" + result1[1][0] + "," + result1[1][1] + ") findtwoenemy "+ 5 +"\n");
-				}
-			}
-			
-			if(score2>score1) {
-				if(checkMust(result2[0][0], result2[0][1],5)) {
-					scoreMap[result2[0][0]][result2[0][1]]=scoreMust(scoreMap[result2[0][0]][result2[0][1]],5);
-					writer.append("(" + result2[0][0] + "," + result2[0][1] + ") findtwoenemy "+ 5 +"\n");
-				}
-				if(checkMust(result2[1][0], result2[1][1],5)) {
-					scoreMap[result2[1][0]][result2[1][1]]=scoreMust(scoreMap[result2[1][0]][result2[1][1]],5);
-					writer.append("(" + result2[1][0] + "," + result2[1][1] + ") findtwoenemy "+ 5 +"\n");
-				}
-			}
+			findResult();
 		}
-		
+
 	}
 
 
-	int[][]findResult(int targetNumber){
-		int[][]result = new int[2][2];
-		int[] start = new int[2];
-		int[] end = new int[2];
-		ArrayList<Integer> endRow = new ArrayList<Integer>(0);//타겟을 담을 리스트(row)
-		ArrayList<Integer> endCol = new ArrayList<Integer>(0);//타겟을 담을 리스트(row)
-		ArrayList<Integer> startRow = new ArrayList<Integer>(0);
-		ArrayList<Integer> startCol = new ArrayList<Integer>(0);//타겟을 담을 리스트(row)
+	void findResult() throws IOException{
 
-		int tempi= targetRow.get(targetNumber);
-		int tempj = targetCol.get(targetNumber);
-		int way = targetWay.get(targetNumber);
-		int lastRow=0;
-		int lastCol=0;
+		int tempi= targetRow;
+		int tempj = targetCol;
+		int way = targetWay;
 
-		endRow.clear();
-		endCol.clear();
 
 		if(way==0) {//가로방향이면
-			for(int k=0;k<6;k++) {
-				if(tempj+k<map.length&&map[tempi][tempj+k]==enemyColor) {
-					lastRow = tempi;
-					lastCol = tempj+k;
-				}
-				if(tempj+k<map.length&&map[tempi][tempj+k]==0) {
-					endRow.add(tempi);
-					endCol.add(tempj+k);
-				}
-			}
-
-
-
-			int index = 0;
-			int max =0;
-
-			for(index = 0;index<endRow.size();index++) {
-				startRow.clear();
-				startCol.clear();
-				int j=0;
-				for(j=1;j<6;j++) {
-					if(endCol.get(index)-j>=0&&endCol.get(index)-j<lastCol&&map[endRow.get(index)][endCol.get(index)-j]==0) {
-						startRow.add(endRow.get(index));
-						startCol.add(endCol.get(index)-j);
-					}
-				}
-				int score=0;
-				
-				for(int k=0;k<startRow.size();k++) {
-					start[0] = startRow.get(k);
-					start[1] = startCol.get(k);
-					
-					score =+ makeLittleUnitAndScore(end[0],end[1]);
-					score =+ makeLittleUnitAndScore(start[0],start[1]);
-
-					if(score>max) {
-						max = score;
-						result[0][0] = start[0]; result[0][1]= start[1]; result[1][0] = end[0]; result[1][1]=end[1];
-					}
-				}
-
-
-
-
-			}
-
+			setStone(tempi, tempj, 0);
 		}
-		
+
 		if(way==1) {//세로방향이면
-			for(int k=0;k<6;k++) {
-				if(tempi+k<map.length&&map[tempi+k][tempj]==enemyColor) {
-					lastRow = tempi+k;
-					lastCol = tempj;
-				}
-				if(tempi+k<map.length&&map[tempi+k][tempj]==0) {
-					endRow.add(tempi+k);
-					endCol.add(tempj);
-				}
-			}
 
-
-
-			int index = 0;
-			int max =0;
-
-			for(index = 0;index<endRow.size();index++) {
-				startRow.clear();
-				startCol.clear();
-				int j=0;
-				for(j=1;j<6;j++) {
-					if(endRow.get(index)-j>=0&&endRow.get(index)-j<lastRow&&map[endRow.get(index)-j][endCol.get(index)]==0) {
-						startRow.add(endRow.get(index)-j);
-						startCol.add(endCol.get(index));
-					}
-				}
-				int score=0;
-				score =+ makeLittleUnitAndScore(end[0],end[1]);
-			
-				for(int k=0;k<startRow.size();k++) {
-					start[0] = startRow.get(k);
-					start[1] = startCol.get(k);
-					score =+ makeLittleUnitAndScore(start[0],start[1]);
-					if(score>max) {
-						max = score;
-						result[0][0] = start[0]; result[0][1]= start[1]; result[1][0] = end[0]; result[1][1]=end[1];
-					}
-				}
-
-
-
-
-			}
-
+			setStone(tempi, tempj,1);
 		}
-		
 		if(way==2) {//대각선1 방향일때
-			for(int k=0;k<6;k++) {
-				if(tempi-k>=0&&tempj+k<map.length&&map[tempi-k][tempj+k]==enemyColor) {
-					lastRow = tempi-k;
-					lastCol = tempj+k;
-				}
-				if(tempi-k>=0&&tempj+k<map.length&&map[tempi-k][tempj+k]==0) {
-					endRow.add(tempi-k);
-					endCol.add(tempj+k);
-				}
-			}
-
-
-
-			int index = 0;
-			int max =0;
-
-			for(index = 0;index<endRow.size();index++) {
-				startRow.clear();
-				startCol.clear();
-				int j=0;
-				for(j=1;j<6;j++) {
-					if(endRow.get(index)-j>=0&&endCol.get(index)+j<map.length&&
-							endRow.get(index)-j<lastRow&&map[endRow.get(index)-j][endCol.get(index)+j]==0) {
-						startRow.add(endRow.get(index)-j);
-						startCol.add(endCol.get(index)+j);
-					}
-				}
-				int score=0;
-				score =+ makeLittleUnitAndScore(end[0],end[1]);
-				
-				for(int k=0;k<startRow.size();k++) {
-					start[0] = startRow.get(k);
-					start[1] = startCol.get(k);
-					score =+ makeLittleUnitAndScore(start[0],start[1]);
-					if(score>max) {
-						max = score;
-						result[0][0] = start[0]; result[0][1]= start[1]; result[1][0] = end[0]; result[1][1]=end[1];
-					}
-				}
-
-
-
-
-			}
-
+			setStone(tempi, tempj, 2);
 		}
-		
-		int max =0;
+
 		if(way==3) {//대각선2 방향일때
-			for(int k=0;k<6;k++) {
-				if(tempi+k<map.length&&tempj+k<map.length&&map[tempi+k][tempj+k]==enemyColor) {
-					lastRow = tempi-k;
-					lastCol = tempj+k;
-				}
-				if(tempi+k<map.length&&tempj+k<map.length&&map[tempi+k][tempj+k]==0) {
-					endRow.add(tempi-k);
-					endCol.add(tempj+k);
-				}
-			}
-
-
-
-			int index = 0;
-			
-
-			for(index = 0;index<endRow.size();index++) {
-				startRow.clear();
-				startCol.clear();
-				int j=0;
-				for(j=1;j<6;j++) {
-					if(endRow.get(index)+j<map.length&&endCol.get(index)+j<map.length&&
-							endRow.get(index)+j<lastRow&&map[endRow.get(index)+j][endCol.get(index)+j]==0) {
-						startRow.add(endRow.get(index)+j);
-						startCol.add(endCol.get(index)+j);
-					}
-				}
-				int score=0;
-				score =+ makeLittleUnitAndScore(end[0],end[1]);
-				
-				for(int k=0;k<startRow.size();k++) {
-					start[0] = startRow.get(k);
-					start[1] = startCol.get(k);
-					score =+ makeLittleUnitAndScore(start[0],start[1]);
-					if(score>max) {
-						max = score;
-						result[0][0] = start[0]; result[0][1]= start[1]; result[1][0] = end[0]; result[1][1]=end[1];
-					}
-				}
-
-
-
-
-			}
-
+			setStone(tempi,tempj,3);
 		}
-	if(targetNumber==0)
-		this.score1 = max;
-	else
-		this.score2 = max;
-	
-		return result;
+
 	}
-
-
-
-
 
 
 
@@ -323,15 +96,13 @@ public class FindTwoEnemy3 {
 		for(int i=0;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
 				if(map[i][j]==enemyColor) {
-					int tempi = i;
-					int tempj =j;
 					int[] unit = new int[6];//6개씩 떼어서 생각
 					boolean isMine = false;
 					unit=copyToColUnit(unit,i,j);
 					int count = 0;
 
 
-					for(int k=0;k<6;k++,tempj++) {
+					for(int k=0;k<6;k++) {
 						if(unit[k]==enemyColor) {
 							count++;
 						}
@@ -339,9 +110,9 @@ public class FindTwoEnemy3 {
 							isMine = true;
 					}
 					if(isMine == false && count == 3) {
-						targetRow.add(tempi);
-						targetCol.add(tempj);
-						targetWay.add(0);//가로
+						targetRow=i;
+						targetCol=j;
+						targetWay=0;;//가로
 						isTarget=true;
 					}
 				}
@@ -358,15 +129,14 @@ public class FindTwoEnemy3 {
 		for(int i=0;i<map.length-6+1;i++) {
 			for(int j=0;j<map.length;j++) {
 				if(map[i][j]==enemyColor) {
-					int tempi = i;
-					int tempj =j;
+
 					int[] unit = new int[6];//6개씩 떼어서 생각
 					boolean isMine = false;
 					unit=copyToRowUnit(unit,i,j);
 					int count = 0;
 
 
-					for(int k=0;k<6;k++,tempj++) {
+					for(int k=0;k<6;k++) {
 						if(unit[k]==enemyColor) {
 							count++;
 						}
@@ -374,9 +144,9 @@ public class FindTwoEnemy3 {
 							isMine = true;
 					}
 					if(isMine == false && count == 3) {
-						targetRow.add(tempi);
-						targetCol.add(tempj);
-						targetWay.add(1);//세로
+						targetRow=i;
+						targetCol=j;
+						targetWay=1;//가로
 						isTarget=true;
 					}
 				}
@@ -394,15 +164,14 @@ public class FindTwoEnemy3 {
 		for(int i=5;i<map.length;i++) {
 			for(int j=0;j<map.length-6+1;j++) {
 				if(map[i][j]==enemyColor) {
-					int tempi = i;
-					int tempj =j;
+
 					int[] unit = new int[6];//6개씩 떼어서 생각
 					boolean isMine = false;
 					unit=copyToDia1Unit(unit,i,j);
 					int count = 0;
 
 
-					for(int k=0;k<6;k++,tempj++) {
+					for(int k=0;k<6;k++) {
 						if(unit[k]==enemyColor) {
 							count++;
 						}
@@ -411,9 +180,9 @@ public class FindTwoEnemy3 {
 					}
 
 					if(isMine == false && count == 3) {
-						targetRow.add(tempi);
-						targetCol.add(tempj);
-						targetWay.add(2);//대각선1
+						targetRow=i;
+						targetCol=j;
+						targetWay=2;//대각선1
 						isTarget=true;
 					}
 				}
@@ -431,15 +200,13 @@ public class FindTwoEnemy3 {
 		for(int i=5;i<map.length;i++) {
 			for(int j=5;j<map.length;j++) {
 				if(map[i][j]==enemyColor) {
-					int tempi = i;
-					int tempj =j;
 					int[] unit = new int[6];//6개씩 떼어서 생각
 					boolean isMine = false;
 					unit=copyToDia2Unit(unit,i,j);
 					int count = 0;
 
 
-					for(int k=0;k<6;k++,tempj++) {
+					for(int k=0;k<6;k++) {
 						if(unit[k]==enemyColor) {
 							count++;
 						}
@@ -448,9 +215,9 @@ public class FindTwoEnemy3 {
 					}
 
 					if(isMine == false && count == 3) {
-						targetRow.add(tempi);
-						targetCol.add(tempj);
-						targetWay.add(3);//대각선2
+						targetRow=i;
+						targetCol=j;
+						targetWay=3;//대각선2
 						isTarget=true;
 					}
 				}
@@ -458,8 +225,185 @@ public class FindTwoEnemy3 {
 
 		}
 		return isTarget;
+
+
+
+
+
+
+
+
 	}
 
+
+
+
+
+
+
+	int littleUnitCounter(int[]unit) {
+		int result=0;
+		for(int k=0;k<6;k++) {
+			if(unit[k]==myColor) {
+				result++;
+			}
+			if(unit[k]==enemyColor) {
+				result=0;
+				break;
+			}
+		}
+
+		return result;
+	}
+	int makeLittleUnitAndScore(int row,int col){
+
+		int[] littleUnit= new int[6];
+		int result=0;
+
+		littleUnit = copyToColUnit(littleUnit,row,col);
+		result =+littleUnitCounter(littleUnit);
+
+		littleUnit = copyToRowUnit(littleUnit,row,col);
+		result =+littleUnitCounter(littleUnit);
+
+		littleUnit = copyToDia1Unit(littleUnit,row,col);
+		result =+littleUnitCounter(littleUnit);
+
+		littleUnit = copyToDia2Unit(littleUnit,row,col);
+		result =+littleUnitCounter(littleUnit);
+
+		return result;
+
+	}
+	double scoreMust(double base, double d) {
+		double a = (int)(base/10)*10 +d;//modify
+		return a;
+	}
+
+	boolean checkMust(int i, int j, double score) {
+		boolean result = false;
+		if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
+			result = true;
+		}
+
+		return result;
+	}
+
+	boolean check(int i, int j) {
+		boolean result = true;
+		if(map[i][j]!=0)
+			result = false;
+		return result;
+	}
+
+	void setStone(int i, int j, int way) throws IOException{
+		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
+		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
+		int index =0;
+		listRow.clear();
+		listCol.clear();
+		int tempi = i;
+		int tempj =j;
+				if(way==0) {
+
+
+					for(tempj=j;tempj<j+6;tempj++) {
+						if(scoreMap[i][tempj]==-10000&&tempj>=1) {
+							listRow.add(i);//왼쪽..에만둘게..?
+							listCol.add(tempj-1);
+						}
+						if(scoreMap[i][tempj]==-10000&&tempj<=map.length-1) {
+							listRow.add(i);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+							listCol.add(tempj+1);
+						}
+					}
+
+
+					while(index<listRow.size()) {
+						if(checkMust(listRow.get(index),listCol.get(index),5.1)){
+							scoreMap[listRow.get(index)][listCol.get(index)]
+									=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],5.1);
+							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") col twothree "+ 5.1 +"\n");
+						}
+						index++;
+					}
+				}
+
+		if(way==1) {
+
+
+			for(tempi=i;tempi<i+6;tempi++) {
+				if(scoreMap[tempi][j]==-10000&&tempi>=1) {
+					listRow.add(tempi-1);//왼쪽..에만둘게..?
+					listCol.add(j);
+				}
+				if(scoreMap[tempi][j]==-10000&&tempi<map.length-1) {//이고  dia1도 수정해야 하는부분
+					listRow.add(tempi+1);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+					listCol.add(j);
+				}
+			}
+
+
+
+			while(index<listRow.size()) {
+				if(checkMust(listRow.get(index),listCol.get(index),5.2)){
+					scoreMap[listRow.get(index)][listCol.get(index)]
+							=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)], 5.2);
+					writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") row twothree"+ 5.2 +"\n");
+				}
+				index++;
+			}
+		}
+		if(way==2) {
+			for(tempi=i, tempj=j;tempi>i-6;tempj++,tempi--) {
+				if(scoreMap[tempi][tempj]==-10000&&tempj+1<map.length&&tempi-1>=0) {
+					listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
+					listCol.add(tempj+1);
+				}
+				if(scoreMap[tempi][tempj]==-10000&&tempj+1>=0&&tempj+1<map.length) {
+					listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
+					listCol.add(tempj-1);
+				}
+			}
+
+
+			while(index<listRow.size()) {
+
+				if(checkMust(listRow.get(index),listCol.get(index),5.3)){
+					scoreMap[listRow.get(index)][listCol.get(index)]
+							=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],5.3);
+					writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia1 twoThree "+ 5.3 +"\n");
+				}
+				index++;
+			}
+		}
+		if(way==3) {
+
+			for(tempi=i, tempj=j;tempi>i-6;tempj--,tempi--) {
+				if(scoreMap[tempi][tempj]==-10000&&tempj-1>=0&&tempi-1>=0) {
+					listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
+					listCol.add(tempj-1);
+				}
+				if(scoreMap[tempi][tempj]==-10000&&tempj+1<map.length&&tempi+1<map.length) {
+					listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
+					listCol.add(tempj+1);
+				}
+			}
+
+
+
+			while(index<listRow.size()) {
+
+				if(checkMust(listRow.get(index), listCol.get(index), 5.4)){
+					scoreMap[listRow.get(index)][listCol.get(index)]
+							=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],5.4);
+					writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 twoThree "+ 5.4 +"\n");
+				}
+
+				index++;
+			}
+		}
+	}
 
 
 	int[]copyToColUnit(int[]unit, int row, int col){
@@ -514,69 +458,4 @@ public class FindTwoEnemy3 {
 		}
 		return unit;
 	}
-
-
-	int littleUnitCounter(int[]unit) {
-		int result=0;
-		for(int k=0;k<6;k++) {
-			if(unit[k]==myColor) {
-				result++;
-			}
-			if(unit[k]==enemyColor) {
-				result=0;
-				break;
-			}
-		}
-
-		return result;
-	}
-
-	int makeLittleUnitAndScore(int row,int col){
-
-		int[] littleUnit= new int[6];
-		int result=0;
-
-		littleUnit = copyToColUnit(littleUnit,row,col);
-		result =+littleUnitCounter(littleUnit);
-
-		littleUnit = copyToRowUnit(littleUnit,row,col);
-		result =+littleUnitCounter(littleUnit);
-
-		littleUnit = copyToDia1Unit(littleUnit,row,col);
-		result =+littleUnitCounter(littleUnit);
-
-		littleUnit = copyToDia2Unit(littleUnit,row,col);
-		result =+littleUnitCounter(littleUnit);
-
-		return result;
-
-	}
-	
-	double scoreMust(double base, double d) {
-		double a = (int)(base/10)*10 +d;//modify
-		return a;
-	}
-
-	boolean checkMust(int i, int j, double score) {
-		boolean result = false;
-		if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
-			result = true;
-		}
-
-		return result;
-	}
-
-	boolean check(int i, int j) {
-		boolean result = true;
-		if(map[i][j]!=0)
-			result = false;
-		return result;
-	}
-
-
-
-
-
-
-
 }

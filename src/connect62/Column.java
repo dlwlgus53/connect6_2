@@ -9,10 +9,11 @@ public class Column {
 	int[][]map;
 	int myColor;
 	int enemyColor;
-	FileWriter writer; 
+	FileWriter writer;
 	FindBetter findBetter;
 
-	Column(int[][] map,double[][]scoreMap,int myColor, FileWriter writer) throws IOException{
+
+	Column(int[][] map,double[][]scoreMap,int myColor ,FileWriter writer){
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;
@@ -20,7 +21,6 @@ public class Column {
 		this.writer = writer;
 
 	}
-
 	double[][] execute() throws IOException {
 		findBetter = new FindBetter(map,scoreMap,myColor);
 		findMyFive();
@@ -422,12 +422,6 @@ public class Column {
 						}
 						index++;
 					}
-
-
-
-
-
-
 				}
 			}
 

@@ -385,114 +385,6 @@ public class Diagonal1 {
 		}
 	}
 
-/*
-	void findEnemyFour() throws IOException {
-		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
-		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
-
-		int[] unit = new int[6];
-
-		for(int i=0;i<map.length-6+1;i++) {
-			for(int j=0;j<map.length;j++) {
-				if(map[i][j]==enemyColor) {
-
-					unit=copyToUnit(unit,i,j);
-
-					int k=0;
-					int count=0;
-					int blankCount=0;
-					blankRow.clear();
-					blankCol.clear();
-
-					boolean isMine=false;
-
-					for(k=0;k<6;k++) {
-						if(unit[k]==myColor)
-							isMine = true;
-						if(unit[k]==enemyColor) {
-							count++;
-						}
-						if(k<4&&unit[k]==0) {
-							if(blankCount<2)	blankCount++;
-							blankRow.add(i-k);
-							blankCol.add(j+k);
-						}
-					}
-
-
-
-					if (isMine==false && count==4) {
-						System.out.println("case 0");
-						if (blankCount==0) {
-							helpEnemy4(i,j);
-						}
-
-						if(blankCount==1) {
-							System.out.println("case1");
-							int score1=findBetter.execute(blankRow.get(0), blankRow.get(0));
-
-							if(score1>0&&(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.3||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
-								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.3;
-								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") dia1 findene4 "+ 4.3 +"\n");
-							}
-
-							else if(score1==0) {
-								helpEnemy4(i,j);
-							}
-						}
-
-						if(blankCount==2) {
-							System.out.println("case2");
-							int score1=0;
-							int score2=0;
-							score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
-							score2=findBetter.execute(blankRow.get(1), blankCol.get(1));
-
-							if (score1==0&&score2==0) {
-								helpEnemy4(i,j);
-							}
-
-
-							else if(score1>=score2&&
-									(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.3||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
-								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.3;
-								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") dia1 findene4 "+ 4.3 +"\n");
-
-							}
-
-							else if(score1<score2&&
-									(scoreMap[blankRow.get(1)][blankCol.get(1)]>4.3||scoreMap[blankRow.get(1)][blankCol.get(1)]==0)) {
-								scoreMap[blankRow.get(1)][blankCol.get(1)]=4.3;
-								writer.append("(" + blankRow.get(1) + "," + blankCol.get(1) + ") dia1 findene4 "+ 4.3 +"\n");
-							}
-
-
-						}
-
-
-
-
-					}
-				}
-			}
-		}
-
-
-		}
-
-		private void helpEnemy4(int i, int j) throws IOException {
-
-			if(i-4>=0&&j+4<map.length&&map[i-4][j+4]==0&&(scoreMap[i-4][j+4]>4.3||scoreMap[i-4][j+4]==0)) {
-				scoreMap[i-4][j+4]=4.3;
-				writer.append("(" + (i-4) + "," +j+4 + ") dia1 findene4 "+ 4.3 +"\n");
-			}
-			if(i+1<map.length&&j-1>=0&&map[i+1][j-1]==0&&(scoreMap[i+1][j-1]>4.3||scoreMap[i+1][j-1]==0)) {
-				scoreMap[i+1][j-1]=4.3;
-				writer.append("(" + (i+1) + "," + (j-1) + ") dia1 findene4 "+ 4.3 +"\n");
-			}
-
-		}*/
-
 		
 	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
@@ -520,7 +412,7 @@ public class Diagonal1 {
 				}
 
 				if(isMine==false&&count==4) {
-					System.out.println("did u find??");
+					
 					for(tempi=i, tempj=j;tempi>i-6;tempj++,tempi--) {
 						if(scoreMap[tempi][tempj]==-10000&&tempj+1<map.length&&tempi-1>=0) {
 							listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
@@ -534,7 +426,7 @@ public class Diagonal1 {
 
 
 					while(index<listRow.size()) {
-						System.out.println("did u find??");
+						
 					if(checkMust(listRow.get(index),listCol.get(index),4.3)){
 						scoreMap[listRow.get(index)][listCol.get(index)]
 								=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],4.3);
@@ -542,8 +434,6 @@ public class Diagonal1 {
 					}
 					index++;
 					}
-
-
 				}
 			}
 		}
