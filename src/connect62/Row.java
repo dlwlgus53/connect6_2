@@ -301,7 +301,7 @@ public class Row {
 							scoreMap[i+6][j]=scoreMust(scoreMap[i+6][j], 3);
 							writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
 						}
-						
+
 					}
 
 					if(blank==1) {
@@ -311,50 +311,6 @@ public class Row {
 							writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
 						}
 					}
-
-					/*if(blank==2||blank==3) {
-						boolean case1 = false;
-						boolean case2= false;
-						if(i+6<map.length){
-							case1=true;//왼쪽 위
-						}
-						if(i-1>=0){
-							case2 = true;//오른쪽 아래
-						}
-						if(case1==true && case2 ==false) {
-							if(scoreMap[i+6][j]>3||scoreMap[i+6][j]==0){
-								scoreMap[i+6][j]=3;
-								writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
-							}
-
-						}
-
-						if(case1==false && case2==true) {
-							if(scoreMap[i-1][j]>3||scoreMap[i-1][j]==0){
-								scoreMap[i-1][j]=3;
-								writer.append("(" + (i-1) + "," + (j) + ") row findEne5 "+ 3+"\n");	
-							}
-						}
-
-						if(case1==true && case2==true) {
-							int score1=findBetter.execute(i+6,j);
-							int score2=findBetter.execute(i-1, j);
-
-							if(score1>=score2) {
-								if(scoreMap[i+6][j]>3||scoreMap[i+6][j]==0){
-									scoreMap[i+6][j]=3;
-									writer.append("(" + (i+6) + "," + (j) + ") row findEne5 "+ 3+"\n");	
-								}
-							}
-							else {
-								if(scoreMap[i-1][j]>3||scoreMap[i-1][j]==0){
-									scoreMap[i-1][j]=3;
-									writer.append("(" + (i-1) + "," + (j) + ") row findEne5 "+ 3+"\n");	
-								}
-							}
-						}
-
-					}*/
 
 					if(blank==4) {
 						if(i-1>=0&&j<map.length&&checkMust(i-1,j,3)){
@@ -369,7 +325,7 @@ public class Row {
 							writer.append("(" + (i-1) + "," + (j) + ") row findEne5 "+ 3+"\n");	
 						}
 					}
-				//}
+
 
 
 
@@ -377,108 +333,6 @@ public class Row {
 			}
 		}
 	}
-	/*void findEnemyFour() throws IOException {
-
-		ArrayList<Integer> blankRow = new ArrayList<Integer>(0);
-		ArrayList<Integer> blankCol = new ArrayList<Integer>(0);
-		int[] unit = new int[6];
-
-		for(int i=0;i<map.length-6+1;i++) {
-			for(int j=0;j<map.length;j++) {
-				if(map[i][j]==enemyColor) {
-
-					unit=copyToUnit(unit,i,j);
-
-					int k=0;
-					int count=0;
-					int blankCount=0;
-
-					blankRow.clear();
-					blankCol.clear();
-
-					boolean isMine=false;
-
-
-					for(k=0;k<6;k++) {
-						if(unit[k]==myColor)
-							isMine = true;
-						if(unit[k]==enemyColor) {
-							count++;
-						}
-						if(unit[k]==0) {
-							if(blankCount<2)	blankCount++;
-							blankRow.add(i+k);
-							blankCol.add(j);
-						}
-					}
-
-
-
-					if (isMine==false && count==4) {
-						if (blankCount==0) {
-							hlepEnemy4(i,j);
-						}
-
-						if(blankCount==1) {
-							int score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
-
-							if(score1>0&&(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.2||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
-								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.2;
-								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") row findene4 "+ 4.2 +"\n");
-							}
-							else if(score1==0){
-								hlepEnemy4(i,j);
-							}
-						}
-
-						if(blankCount==2) {
-							int score1=0;
-							int score2=0;
-							score1=findBetter.execute(blankRow.get(0), blankCol.get(0));
-							score2=findBetter.execute(blankRow.get(1), blankCol.get(1));
-
-							if(score1==0&&score2==0) {
-								hlepEnemy4(i,j);
-							}
-
-							else if(score1>=score2&&
-									(scoreMap[blankRow.get(0)][blankCol.get(0)]>4.2||scoreMap[blankRow.get(0)][blankCol.get(0)]==0)) {
-								scoreMap[blankRow.get(0)][blankCol.get(0)]=4.2;
-								writer.append("(" + blankRow.get(0) + "," + blankCol.get(0) + ") row findene4 "+ 4.2 +"\n");
-
-							}
-
-							else if(score1<score2&&
-									(scoreMap[blankRow.get(1)][blankCol.get(1)]>4.2||scoreMap[blankRow.get(1)][blankCol.get(1)]==0)) {
-								scoreMap[blankRow.get(1)][blankCol.get(1)]=4.2;
-								writer.append("(" + blankRow.get(1) + "," + blankCol.get(1) + ") row findene4 "+ 4.2 +"\n");
-							}
-
-
-						}
-
-
-
-
-					}
-				}
-			}
-		}
-
-
-	}
-
-	void hlepEnemy4(int i, int j) throws IOException {
-		if(i+4<map.length&&map[i+4][j]==0&&(scoreMap[i+4][j]>4.2||scoreMap[i+4][j]==0)) {
-			scoreMap[i+4][j]=4.2;
-			writer.append("(" + i+4 + "," +j + ") row findene4 "+ 4.2 +"\n");
-		}
-		if(i-1>=0&&map[i-1][j]==0&&(scoreMap[i-1][j]>4.2||scoreMap[i-1][j]==0)) {
-			scoreMap[i-1][j]=4.2;
-			writer.append("(" + (i-1) + "," + j + ") row findene4 "+ 4.2 +"\n");
-		}
-	}
-	 */
 
 
 
@@ -492,51 +346,74 @@ public class Row {
 
 		for(int i=0;i<map.length-6+1;i++) {
 			for(int j=0;j<map.length;j++) {
+				if(map[i][j]==enemyColor) {//이거랑1
 
-				unit=copyToUnit(unit,i,j);
+					unit=copyToUnit(unit,i,j);
+					int k=0;
+					int count=0;
+					int index =0;
+					int blank=0;
+					int blankRow=0;
+					int blankCol=0;
+					listRow.clear();
+					listCol.clear();
+					boolean isMine=false;//이거다랑					
 
-				int k=0;
-				int count=0;
-				int index =0;
-				listRow.clear();
-				listCol.clear();
-				boolean isMine=false;
 
 
-				for(k=0;k<6;k++) {
-					if(unit[k]==myColor)
-						isMine = true;
-					if(unit[k]==enemyColor)
-						count++;
-				}
-
-				if(isMine==false&&count==4) {
-					int tempi = i;
-					for(tempi=i;tempi<i+6;tempi++) {
-						if(scoreMap[tempi][j]==-10000&&tempi>=1) {
-							listRow.add(tempi-1);//왼쪽..에만둘게..?
-							listCol.add(j);
-						}
-						if(scoreMap[tempi][j]==-10000&&tempi<map.length-1) {//이고  dia1도 수정해야 하는부분
-							listRow.add(tempi+1);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
-							listCol.add(j);
-						}
+					for(k=0;k<6;k++) {
+						if(unit[k]==myColor)
+							isMine = true;
+						if(unit[k]==enemyColor)
+							count++;
 					}
 
+					if(isMine==false&&count==4) {
+						for(k=0;k<4;k++) {
+							if(unit[k]==0) {
+								blank=k;
+							}
+						}//이거 포문
+						
+						blankRow = i+blank;
+						blankCol = j;
 
-
-					while(index<listRow.size()) {
-						if(checkMust(listRow.get(index),listCol.get(index),4.2)){
-							scoreMap[listRow.get(index)][listCol.get(index)]
-									=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)], 4.2);
-							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") row findene4 "+ 4.2 +"\n");
+						if(blank!=0) {
+							if(checkMust(blankRow,blankCol,4.2)) {
+								scoreMap[blankRow][blankCol]=scoreMust(scoreMap[blankRow][blankCol],4.2);
+								writer.append("(" + blankRow + "," + blankCol + ") dia2 findEne4 "+ 4.2+"\n");
+								return;//이것도 해야지.
+							}
+							
+						}//이거 위에 5친구에서 가저운거야, 숫자 바꿔야해.
+						
+						int tempi = i;
+						for(tempi=i;tempi<i+6;tempi++) {
+							if(scoreMap[tempi][j]==-10000&&tempi>=1) {
+								listRow.add(tempi-1);//왼쪽..에만둘게..?
+								listCol.add(j);
+							}
+							if(scoreMap[tempi][j]==-10000&&tempi<map.length-1) {//이고  dia1도 수정해야 하는부분
+								listRow.add(tempi+1);//이것까지 해야할지 말아야 할지 모르겠어//이거는 오른쪽
+								listCol.add(j);
+							}
 						}
-						index++;
+
+
+
+						while(index<listRow.size()) {
+							if(checkMust(listRow.get(index),listCol.get(index),4.2)){
+								scoreMap[listRow.get(index)][listCol.get(index)]
+										=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)], 4.2);
+								writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") row findene4 "+ 4.2 +"\n");
+							}
+							index++;
+						}
 					}
 				}
+
+
 			}
-
-
 		}
 
 	}

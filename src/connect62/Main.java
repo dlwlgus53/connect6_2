@@ -1,7 +1,10 @@
 package connect62;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+
 public class Main {
+
 	static Scanner scan = new Scanner(System.in);
 	static int myColor;
 	public static void main(String[] args) throws IOException {
@@ -13,13 +16,16 @@ public class Main {
 		myColor = scan.nextInt();
 		if(myColor == -1)	map[map.length/2][map[0].length/2] = -1;
 		Compute compute = new Compute(map,myColor);
-
-		
+		map[6][1]=1;
+		map[5][2]=1;
+		map[4][3]=1;
+		map[2][5]=1;
 		while(true) {
 		enemyInput(map,myColor);
 		compute.execute();
 		}
 	}
+	
 	
 	static void makeClean(int[][]map) {
 		int i,j;

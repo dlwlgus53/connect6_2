@@ -3,16 +3,15 @@ package connect62;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Range {
+public class Common {
 
 	double[][]scoreMap;
 	int[][]map;
 	int myColor;
 	int enemyColor;
-	FileWriter writer; 
-	FindBetter findBetter;
-
-	Range(int[][] map,double[][]scoreMap,int myColor, FileWriter writer) throws IOException{
+	FileWriter writer;
+	
+	Common(int[][] map,double[][]scoreMap,int myColor, FileWriter writer) throws IOException{
 		this.map = map;
 		this.scoreMap = scoreMap;
 		this.myColor = myColor;

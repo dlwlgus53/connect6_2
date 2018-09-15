@@ -269,8 +269,6 @@ public class Diagonal2{
 
 				int k=0;
 				int count=0;
-				int tempj=j;
-				int tempi=i;
 				int blank=0;
 				int blankRow=0;
 				int blankCol=0;
@@ -296,13 +294,7 @@ public class Diagonal2{
 					blankRow = i-blank;
 					blankCol = j-blank;
 
-					/*	
-					System.out.println("blankNum" + " " + blank);
-					System.out.println("블랭크에 있는값" + " " +scoreMap[blankRow][blankCol] );
-					System.out.println("brow : bcol" + " " + blankRow + " " + blankCol);
 
-
-					 */
 
 					if(checkMust(blankRow, blankCol, 3)) {
 						scoreMap[blankRow][blankCol]=scoreMust(scoreMap[blankRow][blankCol],3);
@@ -324,49 +316,7 @@ public class Diagonal2{
 						}
 					}
 
-					/*if(blank==2||blank==3) {
-						boolean case1 = false;
-						boolean case2= false;
-						if(i-6>=0&&j-6>=0){
-							case1=true;//왼쪽 위
-						}
-						if(i+1<map.length&&j+1<map.length){
-							case2 = true;//오른쪽 아래
-						}
-						if(case1==true && case2 ==false) {
-							if(scoreMap[i-6][j-6]>3||scoreMap[i-6][j-6]==0){
-								scoreMap[i-6][j-6]=3;
-								writer.append("(" + (i-6) + "," + (j-6) + ") dia2 findEne5 "+ 3+"\n");	
-							}
 
-						}
-
-						if(case1==false && case2==true) {
-							if(scoreMap[i+1][j+1]>3||scoreMap[i+1][j+1]==0){
-								scoreMap[i+1][j+1]=3;
-								writer.append("(" + (i+1) + "," + (j+1) + ") dia2 findEne5 "+ 3+"\n");	
-							}
-						}
-
-						if(case1==true && case2==true) {
-							int score1=findBetter.execute(i-6,j-6);
-							int score2=findBetter.execute(i+1, j+1);
-
-							if(score1>=score2) {
-								if(scoreMap[i-6][j-6]>3||scoreMap[i-6][j-6]==0){
-									scoreMap[i-6][j-6]=3;
-									writer.append("(" + (i-6) + "," + (j-6) + ") dia2 findEne5 "+ 3+"\n");	
-								}
-							}
-							else {
-								if(scoreMap[i+1][j+1]>3||scoreMap[i+1][j+1]==0){
-									scoreMap[i+1][j+1]=3;
-									writer.append("(" + (i+1) + "," + (j+1) + ") dia2 findEne5 "+ 3+"\n");	
-								}
-							}
-						}
-
-					}*/
 
 					if(blank==4) {
 						if(i+1<map.length&&j+1<map.length&&checkMust(i+1, j+1, 3)){
@@ -389,54 +339,78 @@ public class Diagonal2{
 		}
 	}
 
-		void findEnemyFour() throws IOException {
+	void findEnemyFour() throws IOException {
 		ArrayList<Integer> listRow = new ArrayList<Integer>(0);//row를 담을 리스트
 		ArrayList<Integer> listCol = new ArrayList<Integer>(0);//col을 담을 리스트
 		int[] unit = new int[6];
 		for(int i=5;i<map.length;i++) {
 			for(int j=5;j<map.length;j++) {
+				if(map[i][j]==enemyColor) {//이거랑1
+					unit=copyToUnit(unit,i,j);
 
-				unit=copyToUnit(unit,i,j);
+					int k=0;
+					int count=0;
+					int index =0;
+					int tempi=0;
+					int tempj=0;
+					int blank=0;
+					int blankRow=0;
+					int blankCol=0;
+					listRow.clear();
+					listCol.clear();
+					boolean isMine=false;//이거다랑					
 
-				int k=0;
-				int count=0;
-				int tempj=j;
-				int tempi=i;
-				int index=0;
-				listRow.clear();
-				listCol.clear();
-				boolean isMine=false;
 
-				for(k=0;k<6;k++) {
-					if(unit[k]==myColor)
-						isMine = true;
-					if(unit[k]==enemyColor)
-						count++;
-				}
-
-				if(isMine==false&&count==4) {
-					for(tempi=i, tempj=j;tempi>i-6;tempj--,tempi--) {
-						if(scoreMap[tempi][tempj]==-10000&&tempj-1>=0&&tempi-1>=0) {
-							listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
-							listCol.add(tempj-1);
-						}
-						if(scoreMap[tempi][tempj]==-10000&&tempj+1<map.length&&tempi+1<map.length) {
-							listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
-							listCol.add(tempj+1);
-						}
+					for(k=0;k<6;k++) {
+						if(unit[k]==myColor)
+							isMine = true;
+						if(unit[k]==enemyColor)
+							count++;
 					}
 
+					if(isMine==false&&count==4) {
+						for(k=0;k<4;k++) {
+							if(unit[k]==0) {
+								blank=k;
+							}
+						}//이거 포문
+
+						blankRow = i-blank;
+						blankCol = j-blank;
+
+						if(blank!=0) {
+							if(checkMust(blankRow,blankCol,4.4)) {
+								scoreMap[blankRow][blankCol]=scoreMust(scoreMap[blankRow][blankCol],4.4);
+								writer.append("(" + blankRow + "," + blankCol + ") dia2 findEne4 "+ 4.4+"\n");
+								return;//이것도 해야지.
+							}
+
+						}//이거 위에 5친구에서 가저운거야, 숫자 바꿔야해.
 
 
-					while(index<listRow.size()) {
-
-						if(checkMust(listRow.get(index), listCol.get(index), 4.4)){
-							scoreMap[listRow.get(index)][listCol.get(index)]
-									=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],4.4);
-							writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 findene4 "+ 4.4 +"\n");
+						for(tempi=i, tempj=j;tempi>i-6;tempj--,tempi--) {
+							if(scoreMap[tempi][tempj]==-10000&&tempj-1>=0&&tempi-1>=0) {
+								listRow.add(tempi-1);//대각선 방향 왼쪽 아래돌
+								listCol.add(tempj-1);
+							}
+							if(scoreMap[tempi][tempj]==-10000&&tempj+1<map.length&&tempi+1<map.length) {
+								listRow.add(tempi+1);//대각선 방향 오른쪽 위 돌
+								listCol.add(tempj+1);
+							}
 						}
 
-						index++;
+
+
+						while(index<listRow.size()) {
+
+							if(checkMust(listRow.get(index), listCol.get(index), 4.4)){
+								scoreMap[listRow.get(index)][listCol.get(index)]
+										=scoreMust(scoreMap[listRow.get(index)][listCol.get(index)],4.4);
+								writer.append("(" + listRow.get(index) + "," + listCol.get(index) + ") dia2 findene4 "+ 4.4 +"\n");
+							}
+
+							index++;
+						}
 					}
 				}
 			}
@@ -445,30 +419,30 @@ public class Diagonal2{
 
 
 	}
-	 
 
 
-		
-		double scoreMust(double base, double d) {
-			double a = (int)(base/10)*10 +d;//modify
-			return a;
+
+
+	double scoreMust(double base, double d) {
+		double a = (int)(base/10)*10 +d;//modify
+		return a;
+	}
+
+	boolean checkMust(int i, int j, double score) {
+		boolean result = false;
+		if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
+			result = true;
 		}
 
-		boolean checkMust(int i, int j, double score) {
-			boolean result = false;
-			if(map[i][j]==0&&(scoreMap[i][j]%10==0||scoreMap[i][j]%10>score)){
-				result = true;
-			}
+		return result;
+	}
 
-			return result;
-		}
-
-		boolean check(int i, int j) {
-			boolean result = true;
-			if(map[i][j]!=0)
-				result = false;
-			return result;
-		}
+	boolean check(int i, int j) {
+		boolean result = true;
+		if(map[i][j]!=0)
+			result = false;
+		return result;
+	}
 
 
 	int[]copyToUnit(int[]unit, int row, int col){
